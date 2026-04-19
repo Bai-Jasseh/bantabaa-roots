@@ -32,15 +32,15 @@ export const Route = createFileRoute("/profile/$handle")({
 });
 
 function ProfilePage() {
-  const { dev } = Route.useLoaderData();
+  const { dev } = Route.useLoaderData() as { dev: typeof SAMPLE_DEVELOPERS[number] };
   const projects = SAMPLE_PROJECTS.filter((p) => p.builder.handle === dev.handle);
   const otherProjects = SAMPLE_PROJECTS.filter((p) => p.builder.handle !== dev.handle).slice(0, 2);
   const featured = projects[0] ?? SAMPLE_PROJECTS[0];
 
   const skillGroups = [
-    { label: "Languages", items: dev.skills.filter((s: string) => ["TypeScript", "Python", "Go", "Dart", "JavaScript"].includes(s)) },
-    { label: "Frameworks", items: dev.skills.filter((s: string) => ["React", "Flutter", "FastAPI", "Next.js"].includes(s)) },
-    { label: "Tools & Infra", items: dev.skills.filter((s: string) => ["PostgreSQL", "AWS", "Firebase", "Terraform", "Kubernetes"].includes(s)) },
+    { label: "Languages", items: dev.skills.filter((s) => ["TypeScript", "Python", "Go", "Dart", "JavaScript"].includes(s)) },
+    { label: "Frameworks", items: dev.skills.filter((s) => ["React", "Flutter", "FastAPI", "Next.js"].includes(s)) },
+    { label: "Tools & Infra", items: dev.skills.filter((s) => ["PostgreSQL", "AWS", "Firebase", "Terraform", "Kubernetes"].includes(s)) },
   ].filter((g) => g.items.length > 0);
 
   return (
