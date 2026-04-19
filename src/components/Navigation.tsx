@@ -93,6 +93,9 @@ export function Navigation() {
                 Join Bantabaa
               </Button>
             </Link>
+            <p className="mt-4 px-3 pb-2 text-xs italic text-muted-foreground">
+              Where West African developers gather.
+            </p>
           </nav>
         </div>
       )}
