@@ -62,7 +62,7 @@ function OpportunityDetailPage() {
 
           <Section title="What you'll bring">
             <div className="flex flex-wrap gap-2">
-              {op.tags.map((t: string) => <TagPill key={t}>{t}</TagPill>)}
+              {op.tags.map((t) => <TagPill key={t}>{t}</TagPill>)}
               <TagPill>3+ years experience</TagPill>
               <TagPill>Strong written communication</TagPill>
             </div>
