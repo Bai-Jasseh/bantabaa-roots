@@ -18,7 +18,7 @@ export function Navigation() {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 8);
+    const onScroll = () => setScrolled(window.scrollY > 50);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
@@ -29,7 +29,7 @@ export function Navigation() {
       className={cn(
         "sticky top-0 z-50 w-full transition-all duration-300",
         scrolled
-          ? "border-b border-border bg-background/85 backdrop-blur-md"
+          ? "border-b border-border bg-background/85 shadow-nav backdrop-blur-md"
           : "border-b border-transparent bg-transparent",
       )}
     >
@@ -43,8 +43,8 @@ export function Navigation() {
             <Link
               key={link.to}
               to={link.to}
-              className="rounded-md px-3 py-2 text-sm font-medium text-foreground/80 transition-colors hover:bg-secondary hover:text-foreground"
-              activeProps={{ className: "text-foreground bg-secondary" }}
+              className="nav-link rounded-md px-3 py-2 text-sm font-medium text-foreground/80 transition-colors hover:text-foreground"
+              activeProps={{ "data-active": "true", className: "text-foreground" } as never}
             >
               {link.label}
             </Link>
@@ -93,6 +93,9 @@ export function Navigation() {
                 Join Bantabaa
               </Button>
             </Link>
+            <p className="mt-4 px-3 pb-2 text-xs italic text-muted-foreground">
+              Where West African developers gather.
+            </p>
           </nav>
         </div>
       )}

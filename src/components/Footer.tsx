@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { Github, Twitter, Linkedin } from "lucide-react";
 import { Logo } from "@/components/Logo";
+import { Button } from "@/components/ui/button";
 
 export function Footer() {
   return (
@@ -9,21 +10,57 @@ export function Footer() {
         <div className="grid gap-10 md:grid-cols-4">
           <div className="md:col-span-2">
             <Logo />
+            <p className="mt-3 max-w-sm font-display text-base italic text-foreground/85">
+              Built under the tree. For the builders.
+            </p>
             <p className="mt-4 max-w-sm text-sm text-muted-foreground">
               Where West African developers gather. Build your identity, share your work, and find your place under the tree.
             </p>
+
+            {/* Newsletter */}
+            <form
+              onSubmit={(e) => e.preventDefault()}
+              className="mt-6 max-w-md"
+              aria-label="Newsletter signup"
+            >
+              <label htmlFor="footer-email" className="text-label text-muted-foreground">
+                Get updates on what the community is building.
+              </label>
+              <div className="mt-2 flex flex-col gap-2 sm:flex-row">
+                <input
+                  id="footer-email"
+                  type="email"
+                  required
+                  placeholder="you@yourcraft.dev"
+                  className="flex-1 rounded-md border border-border bg-card px-4 py-2.5 text-sm text-foreground shadow-sm focus:border-[var(--kola)] focus:outline-none focus:ring-2 focus:ring-[var(--kola)]/30"
+                />
+                <Button
+                  type="submit"
+                  className="h-10 bg-[var(--kola)] px-5 text-[var(--kola-foreground)] hover:bg-[var(--kola)]/90"
+                >
+                  Subscribe
+                </Button>
+              </div>
+            </form>
+
             <div className="mt-6 flex items-center gap-3">
-              <a href="#" aria-label="GitHub" className="rounded-md p-2 text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground">
-                <Github className="size-4" />
-              </a>
-              <a href="#" aria-label="Twitter" className="rounded-md p-2 text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground">
-                <Twitter className="size-4" />
-              </a>
-              <a href="#" aria-label="LinkedIn" className="rounded-md p-2 text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground">
-                <Linkedin className="size-4" />
-              </a>
+              {[
+                { href: "#", label: "GitHub", Icon: Github },
+                { href: "#", label: "Twitter / X", Icon: Twitter },
+                { href: "#", label: "LinkedIn", Icon: Linkedin },
+              ].map(({ href, label, Icon }) => (
+                <a
+                  key={label}
+                  href={href}
+                  aria-label={label}
+                  className="rounded-md p-2 text-muted-foreground transition-colors hover:text-[var(--kola)]"
+                >
+                  <Icon className="size-4" />
+                </a>
+              ))}
             </div>
           </div>
+
           <div>
             <h4 className="text-label text-muted-foreground">Community</h4>
             <ul className="mt-4 space-y-2 text-sm">

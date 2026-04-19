@@ -30,7 +30,7 @@ export const Route = createFileRoute("/projects/$slug")({
 });
 
 function ProjectDetailPage() {
-  const { project } = Route.useLoaderData();
+  const { project } = Route.useLoaderData() as { project: typeof SAMPLE_PROJECTS[number] };
   return (
     <div className="mx-auto max-w-5xl px-4 py-10 md:px-6 md:py-16">
       <Link to="/projects" className="text-sm text-muted-foreground hover:text-foreground">← Back to projects</Link>
@@ -59,7 +59,7 @@ function ProjectDetailPage() {
           </Section>
           <Section title="Tech stack">
             <div className="flex flex-wrap gap-2">
-              {project.stack.map((t: string) => <TagPill key={t}>{t}</TagPill>)}
+              {project.stack.map((t) => <TagPill key={t}>{t}</TagPill>)}
             </div>
           </Section>
           <Section title="Lessons learned">
