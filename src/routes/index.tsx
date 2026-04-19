@@ -1,9 +1,13 @@
+import { useEffect, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight, Sparkles, Compass, Users2 } from "lucide-react";
+import { motion, useReducedMotion } from "framer-motion";
+import { ArrowRight, Sparkles, Compass, Users2, ChevronDown, ShieldCheck, MessagesSquare, Globe2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { DeveloperCard } from "@/components/DeveloperCard";
 import { ProjectCard } from "@/components/ProjectCard";
 import { TagPill } from "@/components/TagPill";
+import { Reveal, RevealStagger } from "@/components/motion/Reveal";
+import { CountUp } from "@/components/CountUp";
 import { SAMPLE_DEVELOPERS, SAMPLE_PROJECTS } from "@/data/sample";
 import heroBaobab from "@/assets/hero-baobab.jpg";
 
@@ -21,31 +25,77 @@ export const Route = createFileRoute("/")({
 
 const LOCATIONS = ["Banjul", "Serrekunda", "Brikama", "Dakar", "Saint-Louis", "Accra", "Kumasi", "Freetown", "Lagos", "Abuja"];
 
+function ScrollHint() {
+  const [hidden, setHidden] = useState(false);
+  useEffect(() => {
+    const onScroll = () => setHidden(window.scrollY > 100);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+  if (hidden) return null;
+  return (
+    <div
+      aria-hidden
+      className="mt-10 flex items-center gap-2 text-xs uppercase tracking-wider text-muted-foreground transition-opacity duration-500"
+    >
+      <span>More under the tree</span>
+      <ChevronDown className="size-4 animate-gentle-bounce text-[var(--kola)]" />
+    </div>
+  );
+}
+
 function LandingPage() {
+  const reduce = useReducedMotion();
+
   return (
     <>
       {/* HERO */}
-      <section className="relative overflow-hidden">
-        <div
-          className="absolute inset-0 bg-baobab-pattern"
-          aria-hidden
-        />
-        <img
+      <section className="hero-warm-overlay relative overflow-hidden">
+        <div className="absolute inset-0 bg-baobab-pattern" aria-hidden />
+        <motion.img
           src={heroBaobab}
           alt=""
           aria-hidden
+          loading="eager"
           className="pointer-events-none absolute inset-y-0 right-0 hidden h-full w-2/3 select-none object-cover object-right opacity-30 mix-blend-multiply md:block dark:opacity-15"
+          animate={reduce ? undefined : { scale: [1, 1.02, 1] }}
+          transition={reduce ? undefined : { duration: 4, repeat: Infinity, ease: "easeInOut" }}
         />
         <div className="relative mx-auto grid max-w-7xl gap-8 px-4 py-20 md:grid-cols-12 md:px-6 md:py-32">
           <div className="md:col-span-7">
-            <TagPill className="mb-6">🌳 A gathering place for West African developers</TagPill>
-            <h1 className="font-display text-4xl font-bold leading-[1.05] tracking-tight text-foreground md:text-6xl lg:text-7xl">
+            <motion.div
+              initial={{ opacity: 0, y: reduce ? 0 : 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
+            >
+              <TagPill className="mb-6">🌳 A gathering place for West African developers</TagPill>
+            </motion.div>
+
+            <motion.h1
+              initial={{ opacity: 0, y: reduce ? 0 : 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, ease: "easeOut", delay: 0.05 }}
+              className="font-display text-[40px] font-bold leading-[1.05] tracking-tight text-foreground md:text-[64px]"
+            >
               Where Gambian<br />developers <em className="not-italic text-[var(--kola)]">gather.</em>
-            </h1>
-            <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted-foreground">
+            </motion.h1>
+
+            <motion.p
+              initial={{ opacity: 0, y: reduce ? 0 : 18 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, ease: "easeOut", delay: 0.25 }}
+              className="mt-6 max-w-xl text-lg leading-relaxed text-muted-foreground"
+            >
               Bantabaa is the professional home for West African developers — build your identity, showcase your work, and find your opportunity.
-            </p>
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+            </motion.p>
+
+            <motion.div
+              initial={{ opacity: 0, y: reduce ? 0 : 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, ease: "easeOut", delay: 0.45 }}
+              className="mt-8 flex flex-col gap-3 sm:flex-row"
+            >
               <Link to="/onboarding">
                 <Button size="lg" className="h-12 w-full bg-[var(--kola)] px-8 text-base text-[var(--kola-foreground)] hover:bg-[var(--kola)]/90 sm:w-auto">
                   Join the Bantabaa
@@ -57,12 +107,23 @@ function LandingPage() {
                   Explore projects
                 </Button>
               </Link>
-            </div>
+            </motion.div>
+
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.6, ease: "easeOut", delay: 0.65 }}
+              className="mt-4 text-sm text-muted-foreground"
+            >
+              Free to join. Built for you. No CV required.
+            </motion.p>
+
+            <ScrollHint />
           </div>
         </div>
 
-        {/* LOCATIONS MARQUEE */}
-        <div className="relative border-y border-border bg-card/50 py-4">
+        {/* LOCATIONS MARQUEE — pausable */}
+        <div className="marquee-pause relative border-y border-border bg-card/50 py-4">
           <div className="flex overflow-hidden">
             <div className="flex shrink-0 animate-marquee gap-10 whitespace-nowrap pr-10 text-sm text-muted-foreground">
               {[...LOCATIONS, ...LOCATIONS].map((c, i) => (
@@ -76,26 +137,46 @@ function LandingPage() {
         </div>
       </section>
 
-      {/* VALUE PROPS */}
-      <section className="mx-auto max-w-7xl px-4 py-20 md:px-6">
-        <div className="grid gap-6 md:grid-cols-3">
+      {/* SOCIAL PROOF STATS */}
+      <section className="border-y border-[#E8DDD4] bg-[var(--cream)] py-14 dark:border-border dark:bg-card/40">
+        <div className="mx-auto grid max-w-5xl grid-cols-1 gap-10 px-4 text-center sm:grid-cols-3 md:px-6">
           {[
-            { icon: Sparkles, title: "Be Visible", body: "Your work, your skills, and your story — seen by the people who matter." },
-            { icon: Compass, title: "Find Opportunity", body: "Jobs, contracts, grants, and mentorship — all in one place built for you." },
-            { icon: Users2, title: "Grow Together", body: "A community that understands your context, your challenges, and your ambition." },
-          ].map(({ icon: Icon, title, body }) => (
-            <div key={title} className="rounded-3xl border border-border bg-card p-8 shadow-soft">
-              <div className="flex size-12 items-center justify-center rounded-2xl bg-[var(--kola)]/15 text-[var(--kola)]">
-                <Icon className="size-6" />
-              </div>
-              <h3 className="mt-5 font-display text-2xl font-semibold text-foreground">{title}</h3>
-              <p className="mt-2 text-muted-foreground">{body}</p>
+            { to: 500, suffix: "+", label: "Developers" },
+            { to: 20, suffix: "+", label: "Projects shared" },
+            { to: 10, suffix: "+", label: "Opportunities posted" },
+          ].map((s) => (
+            <div key={s.label}>
+              <CountUp
+                to={s.to}
+                suffix={s.suffix}
+                className="font-display text-5xl font-bold text-[var(--kola)] md:text-6xl"
+              />
+              <p className="mt-2 text-sm uppercase tracking-wider text-muted-foreground">{s.label}</p>
             </div>
           ))}
         </div>
       </section>
 
-      {/* DEVELOPER SHOWCASE */}
+      {/* VALUE PROPS */}
+      <section className="mx-auto max-w-7xl px-4 py-20 md:px-6">
+        <RevealStagger className="grid gap-6 md:grid-cols-3" stagger={0.15}>
+          {[
+            { icon: Sparkles, title: "Be Visible", body: "Your work, your skills, and your story — seen by the people who matter." },
+            { icon: Compass, title: "Find Opportunity", body: "Jobs, contracts, grants, and mentorship — all in one place built for you." },
+            { icon: Users2, title: "Grow Together", body: "A community that understands your context, your challenges, and your ambition." },
+          ].map(({ icon: Icon, title, body }) => (
+            <Reveal key={title} className="rounded-3xl border border-border bg-card p-8 shadow-soft">
+              <div className="flex size-12 items-center justify-center rounded-2xl bg-[var(--kola)]/15 text-[var(--kola)]">
+                <Icon className="size-6" />
+              </div>
+              <h3 className="mt-5 font-display text-2xl font-semibold text-foreground">{title}</h3>
+              <p className="mt-2 text-muted-foreground">{body}</p>
+            </Reveal>
+          ))}
+        </RevealStagger>
+      </section>
+
+      {/* DEVELOPER SHOWCASE — auto-scrolling, pausable */}
       <section className="border-y border-border bg-card/40 py-20">
         <div className="mx-auto max-w-7xl px-4 md:px-6">
           <div className="flex items-end justify-between gap-4">
@@ -108,10 +189,18 @@ function LandingPage() {
             </Link>
           </div>
         </div>
-        <div className="mt-8 overflow-x-auto pb-4">
-          <div className="mx-auto flex max-w-[1400px] gap-4 px-4 md:px-6">
+        {/* Mobile: native horizontal scroll. Desktop: auto-marquee, pausable on hover. */}
+        <div className="mt-8 overflow-x-auto pb-4 md:hidden">
+          <div className="flex gap-4 px-4">
             {SAMPLE_DEVELOPERS.map((d) => (
               <DeveloperCard key={d.handle} dev={d} />
+            ))}
+          </div>
+        </div>
+        <div className="marquee-pause mt-8 hidden overflow-hidden md:block">
+          <div className="flex w-max animate-marquee gap-4 pl-4 pr-4">
+            {[...SAMPLE_DEVELOPERS, ...SAMPLE_DEVELOPERS].map((d, i) => (
+              <DeveloperCard key={`${d.handle}-${i}`} dev={d} />
             ))}
           </div>
         </div>
@@ -128,24 +217,42 @@ function LandingPage() {
             Browse all →
           </Link>
         </div>
-        <div className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <RevealStagger className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3" stagger={0.1}>
           {SAMPLE_PROJECTS.slice(0, 3).map((p) => (
-            <ProjectCard key={p.slug} project={p} />
+            <Reveal key={p.slug}>
+              <ProjectCard project={p} />
+            </Reveal>
           ))}
-        </div>
+        </RevealStagger>
       </section>
 
       {/* FOR COMPANIES */}
-      <section className="bg-[var(--baobab)] py-20 text-[var(--baobab-foreground)]">
-        <div className="mx-auto grid max-w-7xl gap-10 px-4 md:grid-cols-2 md:items-center md:px-6">
+      <section className="relative overflow-hidden bg-[var(--baobab)] py-20 text-[var(--baobab-foreground)]">
+        <div aria-hidden className="absolute inset-0 bg-grid-soft" />
+        <div className="relative mx-auto grid max-w-7xl gap-10 px-4 md:grid-cols-2 md:items-center md:px-6">
           <div>
             <p className="text-label text-[var(--kola)]">For companies</p>
             <h2 className="mt-2 font-display text-3xl font-semibold md:text-4xl">
-              Find exceptional African developer talent.
+              The talent you are looking for is already here.
             </h2>
             <p className="mt-4 max-w-md text-base text-[var(--baobab-foreground)]/80">
               Bantabaa is the most direct line to motivated, vetted developers across The Gambia, Senegal, Ghana, Sierra Leone, and Nigeria. Post once, reach the people building the next decade.
             </p>
+
+            <ul className="mt-8 grid gap-5 sm:grid-cols-3">
+              {[
+                { icon: ShieldCheck, title: "Verified profiles", body: "Not just resumes." },
+                { icon: MessagesSquare, title: "Community reputation", body: "Not just credentials." },
+                { icon: Globe2, title: "African context", body: "Not just global assumptions." },
+              ].map(({ icon: Icon, title, body }) => (
+                <li key={title}>
+                  <Icon className="size-5 text-[var(--kola)]" aria-hidden />
+                  <p className="mt-2 font-medium">{title}</p>
+                  <p className="text-sm text-[var(--baobab-foreground)]/70">{body}</p>
+                </li>
+              ))}
+            </ul>
+
             <div className="mt-8">
               <Link to="/for-companies">
                 <Button size="lg" className="h-12 bg-[var(--kola)] px-8 text-[var(--kola-foreground)] hover:bg-[var(--kola)]/90">
