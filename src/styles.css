@@ -5,20 +5,25 @@
 @custom-variant dark (&:is(.dark *));
 
 /*
- * Design system definition.
+ * Bantabaa design system.
+ * Warm. Rooted. Modern.
  *
- * The @theme inline block maps CSS custom properties to Tailwind utility
- * classes (e.g. --color-primary -> bg-primary, text-primary).
- *
- * The :root and .dark blocks define the actual color values using oklch.
- * All colors MUST use oklch format.
- *
- * To add a new semantic color:
- * 1. Add the variable to :root (light value) and .dark (dark value)
- * 2. Register it in @theme inline as --color-<name>: var(--<name>)
+ * Brand palette (oklch approximations of brand hex):
+ *   Deep Baobab Brown #3D2314 — primary
+ *   Kola Gold        #D48B2D — secondary / CTA
+ *   Savanna Green    #4A7C59 — accent / success
+ *   Warm Cream       #FAF6F0 — light bg
+ *   Deep Night       #1A1210 — dark bg
+ *   Text primary     #1A1210
+ *   Text secondary   #6B5B4E
+ *   Border           #E8DDD4
+ *   Error            #C0392B
  */
 
 @theme inline {
+  --font-display: "Fraunces", ui-serif, Georgia, serif;
+  --font-sans: "DM Sans", ui-sans-serif, system-ui, -apple-system, sans-serif;
+
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -26,6 +31,7 @@
   --radius-2xl: calc(var(--radius) + 8px);
   --radius-3xl: calc(var(--radius) + 12px);
   --radius-4xl: calc(var(--radius) + 16px);
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -46,6 +52,28 @@
   --color-input: var(--input);
   --color-ring: var(--ring);
   --color-ring-offset-background: var(--background);
+
+  /* Brand semantic tokens — use these in components, never raw hex */
+  --color-baobab: var(--baobab);
+  --color-baobab-foreground: var(--baobab-foreground);
+  --color-kola: var(--kola);
+  --color-kola-foreground: var(--kola-foreground);
+  --color-savanna: var(--savanna);
+  --color-savanna-foreground: var(--savanna-foreground);
+  --color-cream: var(--cream);
+  --color-night: var(--night);
+  --color-success: var(--savanna);
+  --color-warning: var(--kola);
+  --color-error: var(--destructive);
+
+  /* Domain tag colors */
+  --color-domain-fintech: var(--domain-fintech);
+  --color-domain-agritech: var(--domain-agritech);
+  --color-domain-healthtech: var(--domain-healthtech);
+  --color-domain-edtech: var(--domain-edtech);
+  --color-domain-govtech: var(--domain-govtech);
+  --color-domain-other: var(--domain-other);
+
   --color-chart-1: var(--chart-1);
   --color-chart-2: var(--chart-2);
   --color-chart-3: var(--chart-3);
@@ -59,77 +87,116 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+
+  /* Brand gradients & shadows */
+  --gradient-warm: linear-gradient(135deg, oklch(0.97 0.022 75) 0%, oklch(0.94 0.04 70) 100%);
+  --gradient-baobab: linear-gradient(180deg, oklch(0.30 0.06 45) 0%, oklch(0.20 0.04 40) 100%);
+  --shadow-warm: 0 10px 40px -12px color-mix(in oklab, var(--baobab) 25%, transparent);
+  --shadow-soft: 0 2px 12px -4px color-mix(in oklab, var(--baobab) 12%, transparent);
 }
 
 :root {
-  --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.129 0.042 264.695);
+  --radius: 0.875rem;
+
+  /* Brand */
+  --baobab: oklch(0.28 0.055 45);            /* #3D2314 deep baobab brown */
+  --baobab-foreground: oklch(0.97 0.018 75); /* warm cream on brown */
+  --kola: oklch(0.71 0.145 65);              /* #D48B2D kola gold */
+  --kola-foreground: oklch(0.20 0.04 40);
+  --savanna: oklch(0.55 0.085 145);          /* #4A7C59 savanna green */
+  --savanna-foreground: oklch(0.98 0.01 145);
+  --cream: oklch(0.97 0.018 75);             /* #FAF6F0 warm cream */
+  --night: oklch(0.18 0.025 35);             /* #1A1210 deep night */
+
+  /* Semantic mapped to brand */
+  --background: oklch(0.97 0.018 75);
+  --foreground: oklch(0.18 0.025 35);
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.129 0.042 264.695);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.129 0.042 264.695);
-  --primary: oklch(0.208 0.042 265.755);
-  --primary-foreground: oklch(0.984 0.003 247.858);
-  --secondary: oklch(0.968 0.007 247.896);
-  --secondary-foreground: oklch(0.208 0.042 265.755);
-  --muted: oklch(0.968 0.007 247.896);
-  --muted-foreground: oklch(0.554 0.046 257.417);
-  --accent: oklch(0.968 0.007 247.896);
-  --accent-foreground: oklch(0.208 0.042 265.755);
-  --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(0.984 0.003 247.858);
-  --border: oklch(0.929 0.013 255.508);
-  --input: oklch(0.929 0.013 255.508);
-  --ring: oklch(0.704 0.04 256.788);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.984 0.003 247.858);
-  --sidebar-foreground: oklch(0.129 0.042 264.695);
-  --sidebar-primary: oklch(0.208 0.042 265.755);
-  --sidebar-primary-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-accent: oklch(0.968 0.007 247.896);
-  --sidebar-accent-foreground: oklch(0.208 0.042 265.755);
-  --sidebar-border: oklch(0.929 0.013 255.508);
-  --sidebar-ring: oklch(0.704 0.04 256.788);
+  --card-foreground: oklch(0.18 0.025 35);
+  --popover: oklch(0.99 0.01 75);
+  --popover-foreground: oklch(0.18 0.025 35);
+  --primary: oklch(0.28 0.055 45);
+  --primary-foreground: oklch(0.97 0.018 75);
+  --secondary: oklch(0.93 0.025 70);
+  --secondary-foreground: oklch(0.28 0.055 45);
+  --muted: oklch(0.94 0.018 70);
+  --muted-foreground: oklch(0.46 0.025 45); /* #6B5B4E */
+  --accent: oklch(0.55 0.085 145);
+  --accent-foreground: oklch(0.98 0.01 145);
+  --destructive: oklch(0.55 0.18 28);       /* #C0392B */
+  --destructive-foreground: oklch(0.98 0.01 28);
+  --border: oklch(0.89 0.02 60);            /* #E8DDD4 */
+  --input: oklch(0.89 0.02 60);
+  --ring: oklch(0.71 0.145 65);
+
+  /* Domain tag tints */
+  --domain-fintech: oklch(0.55 0.13 250);
+  --domain-agritech: oklch(0.55 0.085 145);
+  --domain-healthtech: oklch(0.6 0.12 25);
+  --domain-edtech: oklch(0.71 0.145 65);
+  --domain-govtech: oklch(0.45 0.08 290);
+  --domain-other: oklch(0.46 0.025 45);
+
+  --chart-1: oklch(0.28 0.055 45);
+  --chart-2: oklch(0.71 0.145 65);
+  --chart-3: oklch(0.55 0.085 145);
+  --chart-4: oklch(0.6 0.12 25);
+  --chart-5: oklch(0.55 0.13 250);
+
+  --sidebar: oklch(0.97 0.018 75);
+  --sidebar-foreground: oklch(0.18 0.025 35);
+  --sidebar-primary: oklch(0.28 0.055 45);
+  --sidebar-primary-foreground: oklch(0.97 0.018 75);
+  --sidebar-accent: oklch(0.94 0.018 70);
+  --sidebar-accent-foreground: oklch(0.28 0.055 45);
+  --sidebar-border: oklch(0.89 0.02 60);
+  --sidebar-ring: oklch(0.71 0.145 65);
 }
 
 .dark {
-  --background: oklch(0.129 0.042 264.695);
-  --foreground: oklch(0.984 0.003 247.858);
-  --card: oklch(0.208 0.042 265.755);
-  --card-foreground: oklch(0.984 0.003 247.858);
-  --popover: oklch(0.208 0.042 265.755);
-  --popover-foreground: oklch(0.984 0.003 247.858);
-  --primary: oklch(0.929 0.013 255.508);
-  --primary-foreground: oklch(0.208 0.042 265.755);
-  --secondary: oklch(0.279 0.041 260.031);
-  --secondary-foreground: oklch(0.984 0.003 247.858);
-  --muted: oklch(0.279 0.041 260.031);
-  --muted-foreground: oklch(0.704 0.04 256.788);
-  --accent: oklch(0.279 0.041 260.031);
-  --accent-foreground: oklch(0.984 0.003 247.858);
-  --destructive: oklch(0.704 0.191 22.216);
-  --destructive-foreground: oklch(0.984 0.003 247.858);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.551 0.027 264.364);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.208 0.042 265.755);
-  --sidebar-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-accent: oklch(0.279 0.041 260.031);
-  --sidebar-accent-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.551 0.027 264.364);
+  --baobab: oklch(0.32 0.06 45);
+  --baobab-foreground: oklch(0.97 0.018 75);
+  --kola: oklch(0.74 0.15 65);
+  --kola-foreground: oklch(0.15 0.02 35);
+  --savanna: oklch(0.62 0.09 145);
+  --savanna-foreground: oklch(0.15 0.02 145);
+  --cream: oklch(0.97 0.018 75);
+  --night: oklch(0.15 0.02 35);
+
+  --background: oklch(0.18 0.025 35);          /* #1A1210 */
+  --foreground: oklch(0.95 0.015 75);
+  --card: oklch(0.22 0.03 38);
+  --card-foreground: oklch(0.95 0.015 75);
+  --popover: oklch(0.22 0.03 38);
+  --popover-foreground: oklch(0.95 0.015 75);
+  --primary: oklch(0.74 0.15 65);
+  --primary-foreground: oklch(0.15 0.02 35);
+  --secondary: oklch(0.26 0.035 40);
+  --secondary-foreground: oklch(0.95 0.015 75);
+  --muted: oklch(0.24 0.03 40);
+  --muted-foreground: oklch(0.72 0.025 60);
+  --accent: oklch(0.62 0.09 145);
+  --accent-foreground: oklch(0.15 0.02 145);
+  --destructive: oklch(0.6 0.18 28);
+  --destructive-foreground: oklch(0.98 0.01 28);
+  --border: oklch(0.3 0.025 40);
+  --input: oklch(0.3 0.025 40);
+  --ring: oklch(0.74 0.15 65);
+
+  --chart-1: oklch(0.74 0.15 65);
+  --chart-2: oklch(0.62 0.09 145);
+  --chart-3: oklch(0.6 0.12 25);
+  --chart-4: oklch(0.55 0.13 250);
+  --chart-5: oklch(0.45 0.08 290);
+
+  --sidebar: oklch(0.18 0.025 35);
+  --sidebar-foreground: oklch(0.95 0.015 75);
+  --sidebar-primary: oklch(0.74 0.15 65);
+  --sidebar-primary-foreground: oklch(0.15 0.02 35);
+  --sidebar-accent: oklch(0.24 0.03 40);
+  --sidebar-accent-foreground: oklch(0.95 0.015 75);
+  --sidebar-border: oklch(0.3 0.025 40);
+  --sidebar-ring: oklch(0.74 0.15 65);
 }
 
 @layer base {
@@ -137,8 +204,57 @@
     border-color: var(--color-border);
   }
 
+  html {
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
+    font-feature-settings: "ss01", "cv11";
   }
+
+  h1, h2, h3 {
+    font-family: var(--font-display);
+    letter-spacing: -0.015em;
+  }
+}
+
+@layer utilities {
+  .font-display { font-family: var(--font-display); }
+  .font-sans { font-family: var(--font-sans); }
+
+  .text-h1 { font-size: 3rem; line-height: 3.5rem; font-weight: 700; }
+  .text-h2 { font-size: 2.25rem; line-height: 2.75rem; font-weight: 600; }
+  .text-h3 { font-size: 1.5rem; line-height: 2rem; font-weight: 600; }
+  .text-body-lg { font-size: 1.125rem; line-height: 1.75rem; }
+  .text-label { font-size: 0.75rem; line-height: 1rem; font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; }
+
+  @media (min-width: 768px) {
+    .text-h1 { font-size: 3.5rem; line-height: 4rem; }
+    .text-h2 { font-size: 2.5rem; line-height: 3rem; }
+  }
+
+  .bg-gradient-warm { background-image: var(--gradient-warm); }
+  .bg-gradient-baobab { background-image: var(--gradient-baobab); }
+  .shadow-warm { box-shadow: var(--shadow-warm); }
+  .shadow-soft { box-shadow: var(--shadow-soft); }
+
+  /* Subtle baobab silhouette as decorative SVG background */
+  .bg-baobab-pattern {
+    background-image: radial-gradient(circle at 20% 80%, color-mix(in oklab, var(--kola) 8%, transparent) 0%, transparent 40%),
+                      radial-gradient(circle at 80% 20%, color-mix(in oklab, var(--savanna) 8%, transparent) 0%, transparent 40%);
+  }
+}
+
+/* Marquee animation for the locations strip */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.animate-marquee {
+  animation: marquee 35s linear infinite;
 }
