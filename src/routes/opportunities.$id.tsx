@@ -29,7 +29,7 @@ export const Route = createFileRoute("/opportunities/$id")({
 });
 
 function OpportunityDetailPage() {
-  const { op } = Route.useLoaderData();
+  const { op } = Route.useLoaderData() as { op: typeof SAMPLE_OPPORTUNITIES[number] };
   const related = SAMPLE_OPPORTUNITIES.filter((o) => o.id !== op.id).slice(0, 2);
 
   return (
