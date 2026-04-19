@@ -38,9 +38,9 @@ function ProfilePage() {
   const featured = projects[0] ?? SAMPLE_PROJECTS[0];
 
   const skillGroups = [
-    { label: "Languages", items: dev.skills.filter((s) => ["TypeScript", "Python", "Go", "Dart", "JavaScript"].includes(s)) },
-    { label: "Frameworks", items: dev.skills.filter((s) => ["React", "Flutter", "FastAPI", "Next.js"].includes(s)) },
-    { label: "Tools & Infra", items: dev.skills.filter((s) => ["PostgreSQL", "AWS", "Firebase", "Terraform", "Kubernetes"].includes(s)) },
+    { label: "Languages", items: dev.skills.filter((s: string) => ["TypeScript", "Python", "Go", "Dart", "JavaScript"].includes(s)) },
+    { label: "Frameworks", items: dev.skills.filter((s: string) => ["React", "Flutter", "FastAPI", "Next.js"].includes(s)) },
+    { label: "Tools & Infra", items: dev.skills.filter((s: string) => ["PostgreSQL", "AWS", "Firebase", "Terraform", "Kubernetes"].includes(s)) },
   ].filter((g) => g.items.length > 0);
 
   return (
@@ -91,13 +91,13 @@ function ProfilePage() {
                 <div key={g.label}>
                   <h3 className="mb-2 text-sm font-medium text-muted-foreground">{g.label}</h3>
                   <div className="flex flex-wrap gap-2">
-                    {g.items.map((s) => <TagPill key={s}>{s}</TagPill>)}
+                    {g.items.map((s: string) => <TagPill key={s}>{s}</TagPill>)}
                   </div>
                 </div>
               ))}
               {skillGroups.length === 0 && (
                 <div className="flex flex-wrap gap-2">
-                  {dev.skills.map((s) => <TagPill key={s}>{s}</TagPill>)}
+                  {dev.skills.map((s: string) => <TagPill key={s}>{s}</TagPill>)}
                 </div>
               )}
             </div>
@@ -161,7 +161,7 @@ function ProfilePage() {
                 { v: 23, l: "Discussions" },
                 { v: 41, l: "Devs helped" },
                 { v: 1240, l: "Reputation" },
-              ].map((s) => (
+              ].map((s: string) => (
                 <div key={s.l} className="rounded-xl bg-secondary p-3">
                   <div className="font-display text-2xl font-semibold text-foreground">{s.v}</div>
                   <div className="text-xs text-muted-foreground">{s.l}</div>

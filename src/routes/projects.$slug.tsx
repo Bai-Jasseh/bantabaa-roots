@@ -59,7 +59,7 @@ function ProjectDetailPage() {
           </Section>
           <Section title="Tech stack">
             <div className="flex flex-wrap gap-2">
-              {project.stack.map((t) => <TagPill key={t}>{t}</TagPill>)}
+              {project.stack.map((t: string) => <TagPill key={t}>{t}</TagPill>)}
             </div>
           </Section>
           <Section title="Lessons learned">
