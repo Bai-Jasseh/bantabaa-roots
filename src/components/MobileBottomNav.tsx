@@ -2,13 +2,14 @@ import { Link, useLocation } from "@tanstack/react-router";
 import { Home, Briefcase, Users, User, FolderGit2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-const ITEMS = [
+type Item = { to: string; label: string; icon: typeof Home; exact?: boolean };
+const ITEMS: Item[] = [
   { to: "/", label: "Home", icon: Home, exact: true },
   { to: "/projects", label: "Projects", icon: FolderGit2 },
   { to: "/opportunities", label: "Opps", icon: Briefcase },
   { to: "/spaces", label: "Spaces", icon: Users },
   { to: "/profile/amina-jallow", label: "Profile", icon: User },
-] as const;
+];
 
 export function MobileBottomNav() {
   const location = useLocation();
