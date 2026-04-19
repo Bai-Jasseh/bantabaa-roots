@@ -1,0 +1,101 @@
+import { useEffect, useState } from "react";
+import { Link } from "@tanstack/react-router";
+import { Menu, X } from "lucide-react";
+import { Logo } from "@/components/Logo";
+import { ThemeToggle } from "@/components/ThemeToggle";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+
+const NAV_LINKS = [
+  { to: "/about", label: "About" },
+  { to: "/spaces", label: "Community" },
+  { to: "/opportunities", label: "Opportunities" },
+  { to: "/for-companies", label: "For Companies" },
+] as const;
+
+export function Navigation() {
+  const [scrolled, setScrolled] = useState(false);
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  return (
+    <header
+      className={cn(
+        "sticky top-0 z-50 w-full transition-all duration-300",
+        scrolled
+          ? "border-b border-border bg-background/85 backdrop-blur-md"
+          : "border-b border-transparent bg-transparent",
+      )}
+    >
+      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 md:px-6">
+        <Link to="/" className="flex items-center" aria-label="Bantabaa home">
+          <Logo />
+        </Link>
+
+        <nav className="hidden items-center gap-1 md:flex">
+          {NAV_LINKS.map((link) => (
+            <Link
+              key={link.to}
+              to={link.to}
+              className="rounded-md px-3 py-2 text-sm font-medium text-foreground/80 transition-colors hover:bg-secondary hover:text-foreground"
+              activeProps={{ className: "text-foreground bg-secondary" }}
+            >
+              {link.label}
+            </Link>
+          ))}
+        </nav>
+
+        <div className="flex items-center gap-2">
+          <ThemeToggle />
+          <Link to="/onboarding" className="hidden md:block">
+            <Button variant="ghost" className="h-9 text-foreground">
+              Log in
+            </Button>
+          </Link>
+          <Link to="/onboarding" className="hidden md:block">
+            <Button className="h-9 bg-[var(--kola)] text-[var(--kola-foreground)] hover:bg-[var(--kola)]/90">
+              Join Bantabaa
+            </Button>
+          </Link>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="md:hidden"
+            onClick={() => setOpen(!open)}
+            aria-label="Toggle menu"
+          >
+            {open ? <X className="size-5" /> : <Menu className="size-5" />}
+          </Button>
+        </div>
+      </div>
+
+      {open && (
+        <div className="border-t border-border bg-background md:hidden">
+          <nav className="flex flex-col gap-1 px-4 py-4">
+            {NAV_LINKS.map((link) => (
+              <Link
+                key={link.to}
+                to={link.to}
+                onClick={() => setOpen(false)}
+                className="rounded-md px-3 py-3 text-base font-medium text-foreground hover:bg-secondary"
+              >
+                {link.label}
+              </Link>
+            ))}
+            <Link to="/onboarding" onClick={() => setOpen(false)}>
+              <Button className="mt-2 h-11 w-full bg-[var(--kola)] text-[var(--kola-foreground)] hover:bg-[var(--kola)]/90">
+                Join Bantabaa
+              </Button>
+            </Link>
+          </nav>
+        </div>
+      )}
+    </header>
+  );
+}
