@@ -161,7 +161,7 @@ function ProfilePage() {
                 { v: 23, l: "Discussions" },
                 { v: 41, l: "Devs helped" },
                 { v: 1240, l: "Reputation" },
-              ].map((s: string) => (
+              ].map((s) => (
                 <div key={s.l} className="rounded-xl bg-secondary p-3">
                   <div className="font-display text-2xl font-semibold text-foreground">{s.v}</div>
                   <div className="text-xs text-muted-foreground">{s.l}</div>
