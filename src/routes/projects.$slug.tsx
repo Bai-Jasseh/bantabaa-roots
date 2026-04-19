@@ -30,7 +30,7 @@ export const Route = createFileRoute("/projects/$slug")({
 });
 
 function ProjectDetailPage() {
-  const { project } = Route.useLoaderData();
+  const { project } = Route.useLoaderData() as { project: typeof SAMPLE_PROJECTS[number] };
   return (
     <div className="mx-auto max-w-5xl px-4 py-10 md:px-6 md:py-16">
       <Link to="/projects" className="text-sm text-muted-foreground hover:text-foreground">← Back to projects</Link>
