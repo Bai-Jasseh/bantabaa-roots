@@ -217,7 +217,7 @@ function OpportunitiesPage() {
 function Stat({ value, label }: { value: number; label: string }) {
   return (
     <div className="text-center">
-      <CountUp end={value} className="block font-display text-3xl font-bold text-[var(--kola)] md:text-4xl" />
+      <CountUp to={value} className="block font-display text-3xl font-bold text-[var(--kola)] md:text-4xl" />
       <p className="mt-1 text-xs text-muted-foreground md:text-sm">{label}</p>
     </div>
   );

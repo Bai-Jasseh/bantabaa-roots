@@ -72,7 +72,7 @@ function ProjectsPage() {
               Projects by Gambian and West African developers solving real problems.
             </p>
             <p className="mt-2 text-sm text-muted-foreground">
-              <CountUp end={SAMPLE_PROJECTS.length * 23} className="font-display text-base font-bold text-[var(--kola)]" /> projects shared by developers across West Africa.
+              <CountUp to={SAMPLE_PROJECTS.length * 23} className="font-display text-base font-bold text-[var(--kola)]" /> projects shared by developers across West Africa.
             </p>
           </motion.div>
           <Button
