@@ -72,6 +72,7 @@
   --color-domain-healthtech: var(--domain-healthtech);
   --color-domain-edtech: var(--domain-edtech);
   --color-domain-govtech: var(--domain-govtech);
+  --color-domain-opensource: var(--domain-opensource);
   --color-domain-other: var(--domain-other);
 
   --color-chart-1: var(--chart-1);
