@@ -2,7 +2,7 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 
 type Variant = "filled" | "outlined" | "domain";
-type Domain = "Fintech" | "Agritech" | "Healthtech" | "Edtech" | "Govtech" | "Other";
+export type Domain = "Fintech" | "Agritech" | "Healthtech" | "Edtech" | "Govtech" | "Open Source" | "Other";
 
 interface TagPillProps extends React.HTMLAttributes<HTMLSpanElement> {
   variant?: Variant;
@@ -15,6 +15,7 @@ const DOMAIN_TOKEN: Record<Domain, string> = {
   Healthtech: "var(--domain-healthtech)",
   Edtech: "var(--domain-edtech)",
   Govtech: "var(--domain-govtech)",
+  "Open Source": "var(--domain-opensource)",
   Other: "var(--domain-other)",
 };
 
