@@ -310,6 +310,43 @@
 .nav-link:hover::after,
 .nav-link[data-active="true"]::after { transform: scaleX(1); }
 
+/* Profile cover gradient: Deep Baobab Brown → Kola Gold */
+.bg-cover-baobab-kola {
+  background-image: linear-gradient(90deg, var(--baobab) 0%, color-mix(in oklab, var(--baobab) 55%, var(--kola)) 50%, var(--kola) 100%);
+}
+
+/* Skill tag — explicit Savanna Green tint per spec (#EBF3EE bg, #4A7C59 text) */
+.tag-skill {
+  background-color: color-mix(in oklab, var(--savanna) 12%, white);
+  color: var(--savanna);
+  border: 1px solid color-mix(in oklab, var(--savanna) 30%, transparent);
+}
+.dark .tag-skill {
+  background-color: color-mix(in oklab, var(--savanna) 18%, transparent);
+}
+
+/* Tag stagger fade-in on mount */
+@keyframes tag-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.tag-in { animation: tag-in 0.4s ease-out both; }
+
+/* Section label — uppercase tracked label used across profile sections */
+.section-label {
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+}
+
+/* Activity timeline left border in Kola Gold @ 30% */
+.timeline-rail {
+  border-left: 2px solid color-mix(in oklab, var(--kola) 30%, transparent);
+}
+
 /* Respect prefers-reduced-motion globally */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
