@@ -4,18 +4,22 @@ import { ReactionStrip } from "@/components/ReactionStrip";
 import { Avatar } from "@/components/DeveloperCard";
 import { cn } from "@/lib/utils";
 
-export type Domain = "Fintech" | "Agritech" | "Healthtech" | "Edtech" | "Govtech" | "Other";
+export type Domain = "Fintech" | "Agritech" | "Healthtech" | "Edtech" | "Govtech" | "Open Source" | "Other";
 
 export interface Project {
   slug: string;
   name: string;
   description: string;
   domain: Domain;
-  builder: { name: string; handle: string; hue?: number };
+  builder: { name: string; handle: string; hue?: number; location?: string; flag?: string };
   stack: string[];
   appreciate: number;
   discuss: number;
   coverHue?: number;
+  year?: number;
+  postedDays?: number;
+  seekingCollab?: boolean;
+  featured?: boolean;
 }
 
 const DOMAIN_HUES: Record<Domain, string> = {
@@ -24,35 +28,53 @@ const DOMAIN_HUES: Record<Domain, string> = {
   Healthtech: "var(--domain-healthtech)",
   Edtech: "var(--domain-edtech)",
   Govtech: "var(--domain-govtech)",
+  "Open Source": "var(--domain-opensource)",
   Other: "var(--domain-other)",
 };
 
 export function ProjectCard({ project, className }: { project: Project; className?: string }) {
   const color = DOMAIN_HUES[project.domain];
+  const isNew = (project.postedDays ?? 99) <= 2;
   return (
     <Link
       to="/projects/$slug"
       params={{ slug: project.slug }}
       className={cn(
-        "group flex flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-soft transition-all hover:-translate-y-0.5 hover:shadow-warm",
+        "group relative flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-soft transition-all duration-[250ms] ease-out hover:-translate-y-1 hover:shadow-warm",
         className,
       )}
     >
       <div
-        className="relative aspect-[16/10] w-full overflow-hidden"
+        className="relative aspect-[16/9] w-full overflow-hidden"
         style={{
-          background: `linear-gradient(135deg, color-mix(in oklab, ${color} 55%, var(--baobab)) 0%, color-mix(in oklab, ${color} 25%, var(--background)) 100%)`,
+          background: `linear-gradient(135deg, color-mix(in oklab, ${color} 60%, var(--baobab)) 0%, color-mix(in oklab, ${color} 30%, var(--background)) 100%)`,
         }}
       >
         <div className="absolute inset-0 opacity-30" style={{
           backgroundImage:
-            "radial-gradient(circle at 30% 30%, rgba(255,255,255,0.15) 0%, transparent 50%), radial-gradient(circle at 70% 70%, rgba(0,0,0,0.15) 0%, transparent 50%)",
+            "radial-gradient(circle at 30% 30%, rgba(255,255,255,0.18) 0%, transparent 50%), radial-gradient(circle at 70% 70%, rgba(0,0,0,0.18) 0%, transparent 50%)",
         }} />
-        <div className="absolute left-4 top-4">
-          <TagPill variant="domain" domain={project.domain} />
+        <div className="absolute left-2 bottom-2">
+          <span
+            className="inline-flex items-center gap-1 rounded-full bg-white px-2.5 py-1 text-[11px] font-medium leading-none shadow-sm"
+            style={{ color }}
+          >
+            <span className="size-1.5 rounded-full" style={{ backgroundColor: color }} aria-hidden />
+            {project.domain}
+          </span>
         </div>
+        {isNew && (
+          <span className="absolute right-2 top-2 rounded-full bg-[var(--kola)] px-2 py-0.5 text-[11px] font-medium text-[var(--kola-foreground)] shadow-sm">
+            New
+          </span>
+        )}
+        {project.year && (
+          <span className="absolute right-2 bottom-2 rounded-full bg-black/30 px-2 py-0.5 text-[11px] font-medium text-white backdrop-blur">
+            {project.year}
+          </span>
+        )}
         <div
-          className="absolute bottom-3 right-3 font-display text-4xl font-bold text-white/30"
+          className="absolute bottom-3 right-3 hidden font-display text-4xl font-bold text-white/30 sm:block"
           aria-hidden
         >
           {project.name[0]}
@@ -60,23 +82,34 @@ export function ProjectCard({ project, className }: { project: Project; classNam
       </div>
       <div className="flex flex-1 flex-col gap-3 p-4">
         <div>
-          <h3 className="font-display text-lg font-semibold leading-tight text-foreground">
+          <h3 className="truncate font-display text-[18px] font-semibold leading-tight text-foreground">
             {project.name}
           </h3>
-          <p className="mt-1 line-clamp-2 text-sm text-muted-foreground">{project.description}</p>
+          <p className="mt-1.5 line-clamp-2 text-sm leading-relaxed text-muted-foreground">{project.description}</p>
         </div>
+        <Link
+          to="/profile/$handle"
+          params={{ handle: project.builder.handle }}
+          onClick={(e) => e.stopPropagation()}
+          className="flex items-center gap-2 min-w-0"
+        >
+          <div className="scale-75 origin-left">
+            <Avatar name={project.builder.name} hue={project.builder.hue} />
+          </div>
+          <span className="truncate text-sm font-medium text-foreground hover:underline">{project.builder.name}</span>
+          {project.builder.location && (
+            <span className="truncate text-xs text-muted-foreground">· {project.builder.flag} {project.builder.location.split(",")[0]}</span>
+          )}
+        </Link>
         <div className="flex flex-wrap gap-1.5">
           {project.stack.slice(0, 3).map((t) => (
             <TagPill key={t} variant="outlined">{t}</TagPill>
           ))}
+          {project.stack.length > 3 && (
+            <TagPill variant="outlined">+{project.stack.length - 3} more</TagPill>
+          )}
         </div>
-        <div className="mt-auto flex items-center justify-between gap-3 pt-2">
-          <div className="flex items-center gap-2 min-w-0">
-            <div className="scale-75 origin-left">
-              <Avatar name={project.builder.name} hue={project.builder.hue} />
-            </div>
-            <span className="truncate text-xs text-muted-foreground">{project.builder.name}</span>
-          </div>
+        <div className="mt-auto border-t border-border pt-3">
           <ReactionStrip appreciate={project.appreciate} discuss={project.discuss} />
         </div>
       </div>

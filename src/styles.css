@@ -72,6 +72,7 @@
   --color-domain-healthtech: var(--domain-healthtech);
   --color-domain-edtech: var(--domain-edtech);
   --color-domain-govtech: var(--domain-govtech);
+  --color-domain-opensource: var(--domain-opensource);
   --color-domain-other: var(--domain-other);
 
   --color-chart-1: var(--chart-1);
@@ -133,8 +134,9 @@
   --domain-fintech: oklch(0.55 0.13 250);
   --domain-agritech: oklch(0.55 0.085 145);
   --domain-healthtech: oklch(0.6 0.12 25);
-  --domain-edtech: oklch(0.71 0.145 65);
-  --domain-govtech: oklch(0.45 0.08 290);
+  --domain-edtech: oklch(0.55 0.13 290);
+  --domain-govtech: oklch(0.65 0.135 70);
+  --domain-opensource: oklch(0.58 0.12 220);
   --domain-other: oklch(0.46 0.025 45);
 
   --chart-1: oklch(0.28 0.055 45);
