@@ -78,17 +78,43 @@ export const SAMPLE_OPPORTUNITIES: Opportunity[] = [
 
 export const DOMAINS: Domain[] = ["Fintech", "Agritech", "Healthtech", "Edtech", "Govtech", "Open Source", "Other"];
 
-export const SAMPLE_SPACES = [
-  { slug: "web-development", name: "Web Development", category: "Domain", members: 1284, blurb: "Front-end, back-end, the whole tree.", emoji: "🌐" },
-  { slug: "mobile", name: "Mobile", category: "Domain", members: 742, blurb: "iOS, Android, Flutter, React Native.", emoji: "📱" },
-  { slug: "data-ai", name: "Data & AI", category: "Domain", members: 511, blurb: "From notebooks to production models.", emoji: "🧠" },
-  { slug: "cybersecurity", name: "Cybersecurity", category: "Domain", members: 198, blurb: "Defenders of the digital savanna.", emoji: "🛡️" },
-  { slug: "open-source", name: "Open Source", category: "Domain", members: 433, blurb: "Building in public, together.", emoji: "🌱" },
-  { slug: "beginners-corner", name: "Beginners Corner", category: "Stage", members: 2106, blurb: "No question is too small here.", emoji: "🌱" },
-  { slug: "career-growth", name: "Career Growth", category: "Stage", members: 1340, blurb: "Interviews, salaries, the next step.", emoji: "🪜" },
-  { slug: "senior-lounge", name: "Senior Lounge", category: "Stage", members: 287, blurb: "Architecture, leadership, scale.", emoji: "🪑" },
-  { slug: "the-gambia", name: "The Gambia", category: "Country", members: 612, blurb: "Banjul, Serrekunda, Brikama and beyond.", emoji: "🇬🇲" },
-  { slug: "senegal", name: "Senegal", category: "Country", members: 489, blurb: "Dakar to Saint-Louis.", emoji: "🇸🇳" },
-  { slug: "ghana", name: "Ghana", category: "Country", members: 0, blurb: "Coming soon — bring your people.", emoji: "🇬🇭", comingSoon: true },
-  { slug: "nigeria", name: "Nigeria", category: "Country", members: 0, blurb: "Coming soon — bring your people.", emoji: "🇳🇬", comingSoon: true },
+export type SpaceGradient =
+  | "web" | "mobile" | "data" | "security" | "opensource" | "blockchain"
+  | "beginners" | "career" | "senior"
+  | "gambia" | "senegal" | "ghana" | "nigeria"
+  | "muted";
+
+export type SpaceIcon =
+  | "code" | "smartphone" | "barchart" | "shield" | "gitbranch"
+  | "bookopen" | "trendingup" | "award" | "mappin";
+
+export interface Space {
+  slug: string;
+  name: string;
+  category: "Domain" | "Stage" | "Country";
+  members: number;
+  posts: number;
+  active: number;
+  blurb: string;
+  emoji: string;
+  gradient: SpaceGradient;
+  icon: SpaceIcon;
+  comingSoon?: boolean;
+  memberHues?: number[];
+}
+
+export const SAMPLE_SPACES: Space[] = [
+  { slug: "web-development", name: "Web Development", category: "Domain", members: 1284, posts: 86, active: 42, blurb: "Front-end, back-end, the whole tree.", emoji: "🌐", gradient: "web", icon: "code", memberHues: [30, 145, 250] },
+  { slug: "mobile", name: "Mobile", category: "Domain", members: 742, posts: 51, active: 19, blurb: "iOS, Android, Flutter, React Native.", emoji: "📱", gradient: "mobile", icon: "smartphone", memberHues: [60, 290, 25] },
+  { slug: "data-ai", name: "Data & AI", category: "Domain", members: 511, posts: 38, active: 12, blurb: "From notebooks to production models.", emoji: "🧠", gradient: "data", icon: "barchart", memberHues: [145, 250, 30] },
+  { slug: "cybersecurity", name: "Cybersecurity", category: "Domain", members: 198, posts: 14, active: 5, blurb: "Defenders of the digital savanna.", emoji: "🛡️", gradient: "security", icon: "shield", memberHues: [25, 290, 60] },
+  { slug: "open-source", name: "Open Source", category: "Domain", members: 433, posts: 27, active: 9, blurb: "Building in public, together.", emoji: "🌱", gradient: "opensource", icon: "gitbranch", memberHues: [145, 30, 250] },
+  { slug: "blockchain", name: "Blockchain", category: "Domain", members: 0, posts: 0, active: 0, blurb: "Coming soon — Web3 builders welcome.", emoji: "⛓️", gradient: "muted", icon: "gitbranch", comingSoon: true },
+  { slug: "beginners-corner", name: "Beginners Corner", category: "Stage", members: 2106, posts: 142, active: 78, blurb: "No question is too small here.", emoji: "🌱", gradient: "beginners", icon: "bookopen", memberHues: [30, 60, 145] },
+  { slug: "career-growth", name: "Career Growth", category: "Stage", members: 1340, posts: 94, active: 36, blurb: "Interviews, salaries, the next step.", emoji: "🪜", gradient: "career", icon: "trendingup", memberHues: [25, 250, 290] },
+  { slug: "senior-lounge", name: "Senior Lounge", category: "Stage", members: 287, posts: 22, active: 8, blurb: "Architecture, leadership, scale.", emoji: "🪑", gradient: "senior", icon: "award", memberHues: [290, 30, 250] },
+  { slug: "the-gambia", name: "The Gambia", category: "Country", members: 612, posts: 47, active: 21, blurb: "Banjul, Serrekunda, Brikama and beyond.", emoji: "🇬🇲", gradient: "gambia", icon: "mappin", memberHues: [30, 60, 25] },
+  { slug: "senegal", name: "Senegal", category: "Country", members: 489, posts: 35, active: 14, blurb: "Dakar to Saint-Louis.", emoji: "🇸🇳", gradient: "senegal", icon: "mappin", memberHues: [145, 60, 25] },
+  { slug: "ghana", name: "Ghana", category: "Country", members: 0, posts: 0, active: 0, blurb: "Coming soon — bring your people.", emoji: "🇬🇭", gradient: "muted", icon: "mappin", comingSoon: true },
+  { slug: "nigeria", name: "Nigeria", category: "Country", members: 0, posts: 0, active: 0, blurb: "Coming soon — bring your people.", emoji: "🇳🇬", gradient: "muted", icon: "mappin", comingSoon: true },
 ];
