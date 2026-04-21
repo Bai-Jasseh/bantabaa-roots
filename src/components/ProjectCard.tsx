@@ -3,7 +3,6 @@ import { TagPill } from "@/components/TagPill";
 import { ReactionStrip } from "@/components/ReactionStrip";
 import { Avatar } from "@/components/DeveloperCard";
 import { cn } from "@/lib/utils";
-void Link;
 
 export type Domain = "Fintech" | "Agritech" | "Healthtech" | "Edtech" | "Govtech" | "Open Source" | "Other";
 
