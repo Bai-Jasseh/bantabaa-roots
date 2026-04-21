@@ -349,6 +349,67 @@
   border-left: 2px solid color-mix(in oklab, var(--kola) 30%, transparent);
 }
 
+/* Space card gradients — warm West African palette */
+.space-grad-web { background-image: linear-gradient(135deg, #1A3A5C 0%, #2E6DAD 100%); }
+.space-grad-mobile { background-image: linear-gradient(135deg, #2A1A3A 0%, #7D3C98 100%); }
+.space-grad-data { background-image: linear-gradient(135deg, #1A3A2A 0%, #4A7C59 100%); }
+.space-grad-security { background-image: linear-gradient(135deg, #3A1A1A 0%, #C0392B 100%); }
+.space-grad-opensource { background-image: linear-gradient(135deg, #3A2E1A 0%, #D48B2D 100%); }
+.space-grad-blockchain { background-image: linear-gradient(135deg, #1A2A3A 0%, #2E86C1 100%); }
+.space-grad-beginners { background-image: linear-gradient(135deg, #C0392B 0%, #D48B2D 50%, #F4D35E 100%); }
+.space-grad-career { background-image: linear-gradient(135deg, #B8860B 0%, #D48B2D 100%); }
+.space-grad-senior { background-image: linear-gradient(135deg, #3D2314 0%, #6B3E1F 100%); }
+.space-grad-gambia { background-image: linear-gradient(135deg, #006B3F 0%, #C0392B 100%); }
+.space-grad-senegal { background-image: linear-gradient(135deg, #00853F 0%, #FDEF42 50%, #E31B23 100%); }
+.space-grad-ghana { background-image: linear-gradient(135deg, #C8102E 0%, #FCD116 50%, #006B3F 100%); }
+.space-grad-nigeria { background-image: linear-gradient(135deg, #008751 0%, #ffffff 50%, #008751 100%); }
+.space-grad-muted { background-image: linear-gradient(135deg, #6B5B4E 0%, #8A7A6D 100%); }
+
+/* Section divider label with extending line */
+.section-divider {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.section-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background-color: var(--border);
+}
+
+/* Onboarding step transition */
+@keyframes step-in-right {
+  from { opacity: 0; transform: translateX(20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes step-in-left {
+  from { opacity: 0; transform: translateX(-20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+.step-in-right { animation: step-in-right 0.3s ease-out both; }
+.step-in-left { animation: step-in-left 0.3s ease-out both; }
+
+/* Onboarding illustration breathing */
+@keyframes breathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.03); }
+}
+.animate-breathe { animation: breathe 6s ease-in-out infinite; }
+
+/* Confetti for welcome moment */
+@keyframes confetti-fall {
+  0% { transform: translateY(-20vh) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(120vh) rotate(720deg); opacity: 0; }
+}
+.confetti-piece {
+  position: absolute;
+  width: 10px;
+  height: 14px;
+  border-radius: 2px;
+  animation: confetti-fall 2.4s ease-in forwards;
+}
+
 /* Respect prefers-reduced-motion globally */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
