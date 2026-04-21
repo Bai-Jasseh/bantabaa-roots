@@ -87,20 +87,15 @@ export function ProjectCard({ project, className }: { project: Project; classNam
           </h3>
           <p className="mt-1.5 line-clamp-2 text-sm leading-relaxed text-muted-foreground">{project.description}</p>
         </div>
-        <Link
-          to="/profile/$handle"
-          params={{ handle: project.builder.handle }}
-          onClick={(e) => e.stopPropagation()}
-          className="flex items-center gap-2 min-w-0"
-        >
+        <div className="flex items-center gap-2 min-w-0">
           <div className="scale-75 origin-left">
             <Avatar name={project.builder.name} hue={project.builder.hue} />
           </div>
-          <span className="truncate text-sm font-medium text-foreground hover:underline">{project.builder.name}</span>
+          <span className="truncate text-sm font-medium text-foreground">{project.builder.name}</span>
           {project.builder.location && (
             <span className="truncate text-xs text-muted-foreground">· {project.builder.flag} {project.builder.location.split(",")[0]}</span>
           )}
-        </Link>
+        </div>
         <div className="flex flex-wrap gap-1.5">
           {project.stack.slice(0, 3).map((t) => (
             <TagPill key={t} variant="outlined">{t}</TagPill>
