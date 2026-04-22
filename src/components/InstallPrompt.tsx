@@ -85,8 +85,8 @@ export function InstallPrompt() {
       <div className="rounded-2xl border border-border bg-card/95 p-4 shadow-warm backdrop-blur-xl">
         <div className="mx-auto mb-3 h-1 w-10 rounded-full bg-muted" />
         <div className="flex items-start gap-3">
-          <div className="flex size-12 shrink-0 items-center justify-center rounded-xl bg-[var(--kola)]/12">
-            <Logo iconOnly />
+          <div className="flex size-12 shrink-0 items-center justify-center rounded-xl bg-[var(--kola)]/15 font-display text-xl font-bold text-[var(--kola)]">
+            B
           </div>
           <div className="min-w-0 flex-1">
             <p className="font-display text-base font-semibold text-foreground">
