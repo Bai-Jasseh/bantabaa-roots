@@ -4,6 +4,7 @@ import appCss from "../styles.css?url";
 import { Navigation } from "@/components/Navigation";
 import { Footer } from "@/components/Footer";
 import { MobileBottomNav } from "@/components/MobileBottomNav";
+import { InstallPrompt } from "@/components/InstallPrompt";
 import { Toaster } from "@/components/ui/sonner";
 
 const themeScript = `(function(){try{var t=localStorage.getItem("bantabaa-theme");if(t==="dark"||(!t&&window.matchMedia("(prefers-color-scheme: dark)").matches)){document.documentElement.classList.add("dark");}}catch(e){}})();`;
@@ -35,7 +36,14 @@ export const Route = createRootRoute({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1, viewport-fit=cover" },
-      { name: "theme-color", content: "#3D2314" },
+      { name: "theme-color", content: "#FAF6F0", media: "(prefers-color-scheme: light)" },
+      { name: "theme-color", content: "#0F0A08", media: "(prefers-color-scheme: dark)" },
+      { name: "color-scheme", content: "light dark" },
+      { name: "apple-mobile-web-app-capable", content: "yes" },
+      { name: "mobile-web-app-capable", content: "yes" },
+      { name: "apple-mobile-web-app-status-bar-style", content: "default" },
+      { name: "apple-mobile-web-app-title", content: "Bantabaa" },
+      { name: "format-detection", content: "telephone=no" },
       { title: "Bantabaa — Where West African developers gather" },
       { name: "description", content: "The professional home for West African developers. Build your identity, share your work, find your opportunity." },
       { name: "author", content: "Bantabaa" },
@@ -81,11 +89,12 @@ function RootComponent() {
   return (
     <div className="flex min-h-screen flex-col bg-background text-foreground">
       <Navigation />
-      <main className="flex-1 pb-20 md:pb-0">
+      <main className="flex-1 pb-[calc(64px+env(safe-area-inset-bottom))] md:pb-0">
         <Outlet />
       </main>
       <Footer />
       <MobileBottomNav />
+      <InstallPrompt />
       <Toaster />
     </div>
   );

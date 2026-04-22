@@ -1,13 +1,20 @@
 {
   "name": "Bantabaa — Where West African developers gather",
   "short_name": "Bantabaa",
-  "description": "The professional home for West African developers. Build your identity, showcase your work, and find your opportunity.",
+  "description": "The professional home for West African developers. Build your identity, showcase your work, find your opportunity.",
   "start_url": "/",
+  "scope": "/",
   "display": "standalone",
+  "orientation": "portrait",
   "background_color": "#FAF6F0",
-  "theme_color": "#3D2314",
+  "theme_color": "#D48B2D",
+  "lang": "en",
+  "dir": "ltr",
+  "categories": ["social", "productivity", "business"],
   "icons": [
-    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
-    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
   ]
 }

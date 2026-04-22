@@ -550,3 +550,46 @@ html, body {
   .animate-marquee,
   .animate-gentle-bounce { animation: none !important; }
 }
+
+/* ============================================================
+ * Mobile polish — touch, safe areas, scroll, gestures
+ * ============================================================ */
+
+/* Tap highlight cleanup for touch devices */
+.tap-highlight-transparent {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+}
+
+/* Hide scrollbar visually but keep scroll functional — for filter pill rows */
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+}
+.no-scrollbar::-webkit-scrollbar { display: none; }
+
+/* Edge fade for horizontally scrollable filter rows */
+.scroll-fade-r {
+  -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 24px), transparent 100%);
+  mask-image: linear-gradient(to right, #000 calc(100% - 24px), transparent 100%);
+}
+
+/* Min 44px touch target helper */
+.touch-target {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+/* Reserve space for image aspect ratios to prevent CLS */
+.aspect-cover { aspect-ratio: 16 / 9; }
+.aspect-square { aspect-ratio: 1 / 1; }
+
+/* Safe-area helpers */
+.pt-safe { padding-top: env(safe-area-inset-top); }
+.pb-safe { padding-bottom: env(safe-area-inset-bottom); }
+.pl-safe { padding-left: env(safe-area-inset-left); }
+.pr-safe { padding-right: env(safe-area-inset-right); }
+.h-safe-top { height: env(safe-area-inset-top); }
+

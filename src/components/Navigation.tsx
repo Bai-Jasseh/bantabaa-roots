@@ -27,9 +27,9 @@ export function Navigation() {
   return (
     <header
       className={cn(
-        "sticky top-0 z-50 w-full transition-all duration-300",
+        "sticky top-0 z-50 w-full transition-all duration-300 pt-[env(safe-area-inset-top)]",
         scrolled
-          ? "border-b border-border bg-background/85 shadow-nav backdrop-blur-md"
+          ? "border-b border-border bg-background/85 shadow-nav backdrop-blur-md supports-[backdrop-filter]:bg-background/70"
           : "border-b border-transparent bg-transparent",
       )}
     >
