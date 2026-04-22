@@ -1,13 +1,17 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
-import { useState, useMemo } from "react";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { useState, useMemo, useEffect } from "react";
 import {
-  ArrowLeft, ArrowRight, Check, Github, Eye, EyeOff,
+  ArrowLeft, ArrowRight, Check, Eye, EyeOff,
   Briefcase, Zap, Users, Heart,
 } from "lucide-react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { TagPill } from "@/components/TagPill";
 import { Avatar } from "@/components/DeveloperCard";
+import { supabase } from "@/integrations/supabase/client";
+import { lovable } from "@/integrations/lovable";
+import { useAuth } from "@/hooks/useAuth";
 
 export const Route = createFileRoute("/onboarding")({
   head: () => ({
@@ -48,10 +52,14 @@ const OPEN_TO_OPTIONS = [
 
 function OnboardingPage() {
   const reduce = useReducedMotion();
+  const navigate = useNavigate();
+  const { user, refreshProfile } = useAuth();
   const [step, setStep] = useState(0);
   const [direction, setDirection] = useState<1 | -1>(1);
   const [showPwd, setShowPwd] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
+  const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [title, setTitle] = useState("");
   const [country, setCountry] = useState("Gambia");
@@ -65,8 +73,65 @@ function OnboardingPage() {
   const [pwd, setPwd] = useState("");
   const [pwd2, setPwd2] = useState("");
 
+  // If already logged in, jump past account step
+  useEffect(() => {
+    if (user && step === 0) {
+      setStep(1);
+    }
+  }, [user, step]);
+
   const total = STEPS.length;
-  const next = () => { setDirection(1); setStep((s) => Math.min(s + 1, total - 1)); };
+
+  const handleAccountSubmit = async () => {
+    if (pwd.length < 8) { toast.error("Password must be at least 8 characters."); return; }
+    if (pwd !== pwd2) { toast.error("Passwords don't match."); return; }
+    setSubmitting(true);
+    const { error } = await supabase.auth.signUp({
+      email,
+      password: pwd,
+      options: { emailRedirectTo: `${window.location.origin}/` },
+    });
+    setSubmitting(false);
+    if (error) { toast.error(error.message); return; }
+    toast.success("Account created. Let's build your profile.");
+    setDirection(1); setStep(1);
+  };
+
+  const handleGoogle = async () => {
+    setSubmitting(true);
+    const result = await lovable.auth.signInWithOAuth("google", { redirect_uri: window.location.origin + "/onboarding" });
+    if (result.error) { setSubmitting(false); toast.error("Google sign-in failed."); return; }
+    if (result.redirected) return;
+    setDirection(1); setStep(1);
+  };
+
+  const persistProfile = async () => {
+    if (!user) return;
+    const openToValues = unavailable
+      ? ["not_available" as const]
+      : openTo.map((k) => (k === "collab" ? "collaboration" : k === "mentor" ? "mentoring" : k)) as Array<"work" | "freelance" | "collaboration" | "mentoring" | "not_available">;
+    setSubmitting(true);
+    const { error } = await supabase.from("profiles").update({
+      full_name: name || (user.email?.split("@")[0] ?? "Developer"),
+      title: title || null,
+      country: country || null,
+      city: city || null,
+      languages: langs,
+      skills,
+      bio: story || null,
+      open_to: openToValues,
+      onboarding_completed: true,
+    }).eq("id", user.id);
+    setSubmitting(false);
+    if (error) { toast.error(error.message); return; }
+    await refreshProfile();
+  };
+
+  const next = async () => {
+    if (step === 0 && !user) { await handleAccountSubmit(); return; }
+    if (step === total - 2) { await persistProfile(); }
+    setDirection(1); setStep((s) => Math.min(s + 1, total - 1));
+  };
   const prev = () => { setDirection(-1); setStep((s) => Math.max(s - 1, 0)); };
   const toggle = <T,>(arr: T[], setter: (a: T[]) => void, v: T) =>
     setter(arr.includes(v) ? arr.filter((x) => x !== v) : [...arr, v]);
@@ -76,6 +141,9 @@ function OnboardingPage() {
     (Number(!!name) * 15 + Number(!!title) * 15 + Number(skills.length > 0) * 20 +
       Number(!!story) * 20 + Number(openTo.length > 0 || unavailable) * 15 + 15)
   ));
+
+  // suppress unused warnings — navigate kept for future use
+  void navigate;
 
   return (
     <div className="min-h-[calc(100vh-4rem)] bg-gradient-warm">
