@@ -6,6 +6,7 @@ import { Footer } from "@/components/Footer";
 import { MobileBottomNav } from "@/components/MobileBottomNav";
 import { InstallPrompt } from "@/components/InstallPrompt";
 import { Toaster } from "@/components/ui/sonner";
+import { AuthProvider } from "@/hooks/useAuth";
 
 const themeScript = `(function(){try{var t=localStorage.getItem("bantabaa-theme");if(t==="dark"||(!t&&window.matchMedia("(prefers-color-scheme: dark)").matches)){document.documentElement.classList.add("dark");}}catch(e){}})();`;
 
@@ -87,15 +88,17 @@ function RootShell({ children }: { children: React.ReactNode }) {
 
 function RootComponent() {
   return (
-    <div className="flex min-h-screen flex-col bg-background text-foreground">
-      <Navigation />
-      <main className="flex-1 pb-[calc(64px+env(safe-area-inset-bottom))] md:pb-0">
-        <Outlet />
-      </main>
-      <Footer />
-      <MobileBottomNav />
-      <InstallPrompt />
-      <Toaster />
-    </div>
+    <AuthProvider>
+      <div className="flex min-h-screen flex-col bg-background text-foreground">
+        <Navigation />
+        <main className="flex-1 pb-[calc(64px+env(safe-area-inset-bottom))] md:pb-0">
+          <Outlet />
+        </main>
+        <Footer />
+        <MobileBottomNav />
+        <InstallPrompt />
+        <Toaster />
+      </div>
+    </AuthProvider>
   );
 }
