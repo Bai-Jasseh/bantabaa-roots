@@ -203,17 +203,17 @@ function OnboardingPage() {
                 {step === 0 && (
                   <Step heading="Welcome to Bantabaa." sub="The professional home for West African developers. Let's get you started — it takes about 3 minutes.">
                     <div className="space-y-3">
-                      <Button variant="outline" className="h-11 w-full bg-foreground text-background hover:bg-foreground/90 hover:text-background">
-                        <Github className="size-4" /> Continue with GitHub
+                      <Button variant="outline" className="h-11 w-full" onClick={handleGoogle} disabled={submitting}>
+                        Continue with Google
                       </Button>
-                      <p className="text-center text-xs text-muted-foreground">Most developers use this</p>
-                      <Button variant="outline" className="h-11 w-full">Continue with Google</Button>
                       <div className="relative my-4 flex items-center">
                         <div className="flex-1 border-t border-border" />
                         <span className="px-3 text-xs uppercase tracking-wider text-muted-foreground">or sign up with email</span>
                         <div className="flex-1 border-t border-border" />
                       </div>
-                      <Field label="Email address"><input type="email" className={inputCls} placeholder="you@example.com" /></Field>
+                      <Field label="Email address">
+                        <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} className={inputCls} placeholder="you@example.com" />
+                      </Field>
                       <Field label="Password">
                         <div className="relative">
                           <input type={showPwd ? "text" : "password"} value={pwd} onChange={(e) => setPwd(e.target.value)} className={inputCls} placeholder="At least 8 characters" />
@@ -233,6 +233,9 @@ function OnboardingPage() {
                         </div>
                       </Field>
                       <p className="pt-2 text-xs text-muted-foreground">By joining you agree to our <a className="text-[var(--kola)] underline">Terms</a> and <a className="text-[var(--kola)] underline">Privacy Policy</a>.</p>
+                      <p className="text-center text-sm text-muted-foreground">
+                        Already have an account? <Link to="/login" className="text-[var(--kola)] underline">Log in</Link>
+                      </p>
                     </div>
                   </Step>
                 )}
