@@ -56,8 +56,8 @@ const SAMPLE_THREADS = [
 ];
 
 function SpaceDetailPage() {
-  const { space } = Route.useLoaderData();
-  const Icon = ICON_MAP[space.icon];
+  const { space } = Route.useLoaderData() as { space: typeof SAMPLE_SPACES[number] };
+  const Icon = ICON_MAP[space.icon as SpaceIcon];
   const [tab, setTab] = useState<"Discussions" | "Resources" | "Members" | "About">("Discussions");
   const [filter, setFilter] = useState<typeof POST_TYPES[number]>("All");
   const [joined, setJoined] = useState(false);
