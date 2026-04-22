@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { X } from "lucide-react";
-import { Logo } from "@/components/Logo";
+// Logo intentionally not used — install card uses a compact mark
 import { Button } from "@/components/ui/button";
 
 type BIPEvent = Event & {
