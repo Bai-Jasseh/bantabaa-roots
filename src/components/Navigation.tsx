@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { Menu, X } from "lucide-react";
+import { Menu, X, LogOut } from "lucide-react";
 import { Logo } from "@/components/Logo";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { useAuth } from "@/hooks/useAuth";
 
 const NAV_LINKS = [
   { to: "/about", label: "About" },
@@ -16,6 +17,7 @@ const NAV_LINKS = [
 export function Navigation() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const { user, profile, signOut } = useAuth();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 50);
@@ -53,16 +55,29 @@ export function Navigation() {
 
         <div className="flex items-center gap-2">
           <ThemeToggle />
-          <Link to="/onboarding" className="hidden md:block">
-            <Button variant="ghost" className="h-9 text-foreground">
-              Log in
-            </Button>
-          </Link>
-          <Link to="/onboarding" className="hidden md:block">
-            <Button className="h-9 bg-[var(--kola)] text-[var(--kola-foreground)] hover:bg-[var(--kola)]/90">
-              Join Bantabaa
-            </Button>
-          </Link>
+          {user ? (
+            <>
+              {profile?.handle && (
+                <Link to="/profile/$handle" params={{ handle: profile.handle }} className="hidden md:block">
+                  <Button variant="ghost" className="h-9">My Profile</Button>
+                </Link>
+              )}
+              <Button variant="ghost" size="icon" className="hidden md:inline-flex" onClick={signOut} aria-label="Sign out">
+                <LogOut className="size-4" />
+              </Button>
+            </>
+          ) : (
+            <>
+              <Link to="/login" className="hidden md:block">
+                <Button variant="ghost" className="h-9 text-foreground">Log in</Button>
+              </Link>
+              <Link to="/onboarding" className="hidden md:block">
+                <Button className="h-9 bg-[var(--kola)] text-[var(--kola-foreground)] hover:bg-[var(--kola)]/90">
+                  Join Bantabaa
+                </Button>
+              </Link>
+            </>
+          )}
           <Button
             variant="ghost"
             size="icon"
