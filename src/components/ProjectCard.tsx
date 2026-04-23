@@ -4,7 +4,7 @@ import { ReactionStrip } from "@/components/ReactionStrip";
 import { Avatar } from "@/components/DeveloperCard";
 import { cn } from "@/lib/utils";
 
-export type Domain = "Fintech" | "Agritech" | "Healthtech" | "Edtech" | "Govtech" | "Open Source" | "Mobile" | "AI/ML" | "Cybersecurity" | "Blockchain" | "E-commerce" | "Other";
+export type Domain = "Fintech" | "Agritech" | "Healthtech" | "Edtech" | "Govtech" | "Open Source" | "Other";
 
 export interface Project {
   id?: string;

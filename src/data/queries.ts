@@ -44,7 +44,7 @@ export function projectRowToProject(
     slug: p.slug,
     name: p.name,
     description: p.description,
-    domain: (p.domain as Domain) ?? "Other",
+    domain: (["Fintech","Agritech","Healthtech","Edtech","Govtech","Open Source"].includes(p.domain) ? p.domain : "Other") as Domain,
     builder: builder
       ? {
           name: builder.full_name,
