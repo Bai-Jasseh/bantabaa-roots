@@ -1,22 +1,23 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import { useState } from "react";
 import { Building2, MapPin } from "lucide-react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { TagPill } from "@/components/TagPill";
-import { OpportunityCard } from "@/components/OpportunityCard";
-import { SAMPLE_OPPORTUNITIES } from "@/data/sample";
+import { fetchOpportunityById } from "@/data/queries";
+import { useAuth } from "@/hooks/useAuth";
+import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/opportunities/$id")({
-  loader: ({ params }) => {
-    const op = SAMPLE_OPPORTUNITIES.find((o) => o.id === params.id);
+  loader: async ({ params }) => {
+    const op = await fetchOpportunityById(params.id);
     if (!op) throw notFound();
-    return { op };
+    return op;
   },
   head: ({ loaderData }) => ({
     meta: [
-      { title: `${loaderData?.op.title} at ${loaderData?.op.company} — Bantabaa` },
-      { name: "description", content: `${loaderData?.op.type} · ${loaderData?.op.location} · ${loaderData?.op.compensation ?? ""}` },
-      { property: "og:title", content: `${loaderData?.op.title} — Bantabaa` },
-      { property: "og:description", content: `${loaderData?.op.company} · ${loaderData?.op.location}` },
+      { title: `${loaderData?.title} at ${loaderData?.company} — Bantabaa` },
+      { name: "description", content: `${loaderData?.type} · ${loaderData?.location} · ${loaderData?.compensation ?? ""}` },
     ],
   }),
   notFoundComponent: () => (
@@ -25,12 +26,27 @@ export const Route = createFileRoute("/opportunities/$id")({
       <Link to="/opportunities" className="mt-4 inline-block text-[var(--kola)]">← All opportunities</Link>
     </div>
   ),
+  errorComponent: ({ error }) => <div className="mx-auto max-w-md py-32 text-center text-muted-foreground">{error.message}</div>,
   component: OpportunityDetailPage,
 });
 
 function OpportunityDetailPage() {
-  const { op } = Route.useLoaderData() as { op: typeof SAMPLE_OPPORTUNITIES[number] };
-  const related = SAMPLE_OPPORTUNITIES.filter((o) => o.id !== op.id).slice(0, 2);
+  const op = Route.useLoaderData();
+  const { user } = useAuth();
+  const [applying, setApplying] = useState(false);
+  const [message, setMessage] = useState("");
+
+  const apply = async () => {
+    if (!user) { toast.error("Sign in to apply."); return; }
+    setApplying(true);
+    const { error } = await supabase.from("opportunity_applications").insert({
+      opportunity_id: op.id, applicant_id: user.id, message: message.trim() || null,
+    });
+    setApplying(false);
+    if (error) { toast.error(error.message); return; }
+    toast.success("Application sent.");
+    setMessage("");
+  };
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-10 md:px-6 md:py-16">
@@ -39,10 +55,7 @@ function OpportunityDetailPage() {
       <div className="mt-6 grid gap-8 md:grid-cols-3">
         <div className="space-y-8 md:col-span-2">
           <div className="flex items-start gap-4">
-            <div
-              className="flex size-14 items-center justify-center rounded-2xl text-white"
-              style={{ backgroundColor: `oklch(0.45 0.08 ${op.logoHue ?? 60})` }}
-            >
+            <div className="flex size-14 items-center justify-center rounded-2xl text-white" style={{ backgroundColor: `oklch(0.45 0.08 ${op.logoHue ?? 60})` }}>
               <Building2 className="size-6" />
             </div>
             <div>
@@ -56,31 +69,23 @@ function OpportunityDetailPage() {
             </div>
           </div>
 
-          <Section title="About the role">
-            We are looking for a builder who can ship — not just code. You will work alongside a small product team to grow a product that already serves real people across West Africa. Comfort with ambiguity, a bias for shipping, and care for the user's reality matter as much as your stack.
-          </Section>
-
           <Section title="What you'll bring">
-            <div className="flex flex-wrap gap-2">
-              {op.tags.map((t) => <TagPill key={t}>{t}</TagPill>)}
-              <TagPill>3+ years experience</TagPill>
-              <TagPill>Strong written communication</TagPill>
-            </div>
+            <div className="flex flex-wrap gap-2">{op.tags.map((t) => <TagPill key={t}>{t}</TagPill>)}</div>
           </Section>
 
-          <Section title="Compensation & benefits">
-            <ul className="space-y-2 text-foreground/80">
-              <li>· Compensation: <span className="font-medium text-foreground">{op.compensation ?? "Competitive"}</span></li>
-              <li>· Remote-friendly with quarterly team meetups</li>
-              <li>· Health stipend and learning budget</li>
-              <li>· Equity for permanent hires</li>
-            </ul>
-          </Section>
+          {op.compensation && (
+            <Section title="Compensation">
+              <p className="font-medium text-foreground">{op.compensation}</p>
+            </Section>
+          )}
 
           <Section title="How to apply">
-            <p>Send a short note about a project you've shipped you're proud of. We read every application personally.</p>
-            <Button className="mt-4 h-11 bg-[var(--kola)] px-8 text-[var(--kola-foreground)] hover:bg-[var(--kola)]/90">
-              Apply now
+            <textarea value={message} onChange={(e) => setMessage(e.target.value)} rows={4}
+              placeholder={user ? "Optional — tell them why you're a fit." : "Sign in to apply."}
+              disabled={!user}
+              className="w-full rounded-md border border-border bg-background p-3 text-sm focus:border-[var(--kola)] focus:outline-none focus:ring-2 focus:ring-[var(--kola)]/30" />
+            <Button onClick={apply} disabled={!user || applying} className="mt-4 h-11 bg-[var(--kola)] px-8 text-[var(--kola-foreground)] hover:bg-[var(--kola)]/90">
+              {applying ? "Sending…" : "Apply now"}
             </Button>
           </Section>
         </div>
@@ -88,24 +93,15 @@ function OpportunityDetailPage() {
         <aside className="space-y-4 md:sticky md:top-24 md:self-start">
           <div className="rounded-2xl border border-border bg-card p-5 shadow-soft">
             <p className="text-label text-muted-foreground">About {op.company}</p>
-            <p className="mt-3 text-sm text-foreground/80">
-              A growing African team building infrastructure for the next decade of digital commerce on the continent.
-            </p>
-            <Button variant="outline" className="mt-4 w-full">View company</Button>
+            <p className="mt-3 text-sm text-foreground/80">An organization hiring through Bantabaa.</p>
           </div>
           <div className="rounded-2xl border border-border bg-card p-5 shadow-soft">
             <p className="text-label text-muted-foreground">Posted</p>
             <p className="mt-2 text-sm text-foreground">{op.postedDays === 0 ? "Today" : `${op.postedDays} days ago`}</p>
+            {op.deadlineDays !== undefined && <p className="mt-1 text-xs text-[var(--destructive)]">Closes in {op.deadlineDays}d</p>}
           </div>
         </aside>
       </div>
-
-      <section className="mt-16">
-        <h2 className="font-display text-2xl font-semibold">Related opportunities</h2>
-        <div className="mt-4 space-y-3">
-          {related.map((o) => <OpportunityCard key={o.id} op={o} />)}
-        </div>
-      </section>
     </div>
   );
 }
