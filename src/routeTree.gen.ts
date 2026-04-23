@@ -15,11 +15,14 @@ import { Route as OpportunitiesRouteImport } from './routes/opportunities'
 import { Route as OnboardingRouteImport } from './routes/onboarding'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as ForCompaniesRouteImport } from './routes/for-companies'
+import { Route as DevelopersRouteImport } from './routes/developers'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as SpacesSlugRouteImport } from './routes/spaces.$slug'
+import { Route as ProjectsNewRouteImport } from './routes/projects.new'
 import { Route as ProjectsSlugRouteImport } from './routes/projects.$slug'
 import { Route as ProfileHandleRouteImport } from './routes/profile.$handle'
+import { Route as OpportunitiesNewRouteImport } from './routes/opportunities.new'
 import { Route as OpportunitiesIdRouteImport } from './routes/opportunities.$id'
 
 const SpacesRoute = SpacesRouteImport.update({
@@ -52,6 +55,11 @@ const ForCompaniesRoute = ForCompaniesRouteImport.update({
   path: '/for-companies',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DevelopersRoute = DevelopersRouteImport.update({
+  id: '/developers',
+  path: '/developers',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
   path: '/about',
@@ -67,6 +75,11 @@ const SpacesSlugRoute = SpacesSlugRouteImport.update({
   path: '/$slug',
   getParentRoute: () => SpacesRoute,
 } as any)
+const ProjectsNewRoute = ProjectsNewRouteImport.update({
+  id: '/new',
+  path: '/new',
+  getParentRoute: () => ProjectsRoute,
+} as any)
 const ProjectsSlugRoute = ProjectsSlugRouteImport.update({
   id: '/$slug',
   path: '/$slug',
@@ -77,6 +90,11 @@ const ProfileHandleRoute = ProfileHandleRouteImport.update({
   path: '/profile/$handle',
   getParentRoute: () => rootRouteImport,
 } as any)
+const OpportunitiesNewRoute = OpportunitiesNewRouteImport.update({
+  id: '/new',
+  path: '/new',
+  getParentRoute: () => OpportunitiesRoute,
+} as any)
 const OpportunitiesIdRoute = OpportunitiesIdRouteImport.update({
   id: '/$id',
   path: '/$id',
@@ -86,6 +104,7 @@ const OpportunitiesIdRoute = OpportunitiesIdRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/developers': typeof DevelopersRoute
   '/for-companies': typeof ForCompaniesRoute
   '/login': typeof LoginRoute
   '/onboarding': typeof OnboardingRoute
@@ -93,13 +112,16 @@ export interface FileRoutesByFullPath {
   '/projects': typeof ProjectsRouteWithChildren
   '/spaces': typeof SpacesRouteWithChildren
   '/opportunities/$id': typeof OpportunitiesIdRoute
+  '/opportunities/new': typeof OpportunitiesNewRoute
   '/profile/$handle': typeof ProfileHandleRoute
   '/projects/$slug': typeof ProjectsSlugRoute
+  '/projects/new': typeof ProjectsNewRoute
   '/spaces/$slug': typeof SpacesSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/developers': typeof DevelopersRoute
   '/for-companies': typeof ForCompaniesRoute
   '/login': typeof LoginRoute
   '/onboarding': typeof OnboardingRoute
@@ -107,14 +129,17 @@ export interface FileRoutesByTo {
   '/projects': typeof ProjectsRouteWithChildren
   '/spaces': typeof SpacesRouteWithChildren
   '/opportunities/$id': typeof OpportunitiesIdRoute
+  '/opportunities/new': typeof OpportunitiesNewRoute
   '/profile/$handle': typeof ProfileHandleRoute
   '/projects/$slug': typeof ProjectsSlugRoute
+  '/projects/new': typeof ProjectsNewRoute
   '/spaces/$slug': typeof SpacesSlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/developers': typeof DevelopersRoute
   '/for-companies': typeof ForCompaniesRoute
   '/login': typeof LoginRoute
   '/onboarding': typeof OnboardingRoute
@@ -122,8 +147,10 @@ export interface FileRoutesById {
   '/projects': typeof ProjectsRouteWithChildren
   '/spaces': typeof SpacesRouteWithChildren
   '/opportunities/$id': typeof OpportunitiesIdRoute
+  '/opportunities/new': typeof OpportunitiesNewRoute
   '/profile/$handle': typeof ProfileHandleRoute
   '/projects/$slug': typeof ProjectsSlugRoute
+  '/projects/new': typeof ProjectsNewRoute
   '/spaces/$slug': typeof SpacesSlugRoute
 }
 export interface FileRouteTypes {
@@ -131,6 +158,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
+    | '/developers'
     | '/for-companies'
     | '/login'
     | '/onboarding'
@@ -138,13 +166,16 @@ export interface FileRouteTypes {
     | '/projects'
     | '/spaces'
     | '/opportunities/$id'
+    | '/opportunities/new'
     | '/profile/$handle'
     | '/projects/$slug'
+    | '/projects/new'
     | '/spaces/$slug'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/about'
+    | '/developers'
     | '/for-companies'
     | '/login'
     | '/onboarding'
@@ -152,13 +183,16 @@ export interface FileRouteTypes {
     | '/projects'
     | '/spaces'
     | '/opportunities/$id'
+    | '/opportunities/new'
     | '/profile/$handle'
     | '/projects/$slug'
+    | '/projects/new'
     | '/spaces/$slug'
   id:
     | '__root__'
     | '/'
     | '/about'
+    | '/developers'
     | '/for-companies'
     | '/login'
     | '/onboarding'
@@ -166,14 +200,17 @@ export interface FileRouteTypes {
     | '/projects'
     | '/spaces'
     | '/opportunities/$id'
+    | '/opportunities/new'
     | '/profile/$handle'
     | '/projects/$slug'
+    | '/projects/new'
     | '/spaces/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  DevelopersRoute: typeof DevelopersRoute
   ForCompaniesRoute: typeof ForCompaniesRoute
   LoginRoute: typeof LoginRoute
   OnboardingRoute: typeof OnboardingRoute
@@ -227,6 +264,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ForCompaniesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/developers': {
+      id: '/developers'
+      path: '/developers'
+      fullPath: '/developers'
+      preLoaderRoute: typeof DevelopersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/about': {
       id: '/about'
       path: '/about'
@@ -248,6 +292,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SpacesSlugRouteImport
       parentRoute: typeof SpacesRoute
     }
+    '/projects/new': {
+      id: '/projects/new'
+      path: '/new'
+      fullPath: '/projects/new'
+      preLoaderRoute: typeof ProjectsNewRouteImport
+      parentRoute: typeof ProjectsRoute
+    }
     '/projects/$slug': {
       id: '/projects/$slug'
       path: '/$slug'
@@ -262,6 +313,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProfileHandleRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/opportunities/new': {
+      id: '/opportunities/new'
+      path: '/new'
+      fullPath: '/opportunities/new'
+      preLoaderRoute: typeof OpportunitiesNewRouteImport
+      parentRoute: typeof OpportunitiesRoute
+    }
     '/opportunities/$id': {
       id: '/opportunities/$id'
       path: '/$id'
@@ -274,10 +332,12 @@ declare module '@tanstack/react-router' {
 
 interface OpportunitiesRouteChildren {
   OpportunitiesIdRoute: typeof OpportunitiesIdRoute
+  OpportunitiesNewRoute: typeof OpportunitiesNewRoute
 }
 
 const OpportunitiesRouteChildren: OpportunitiesRouteChildren = {
   OpportunitiesIdRoute: OpportunitiesIdRoute,
+  OpportunitiesNewRoute: OpportunitiesNewRoute,
 }
 
 const OpportunitiesRouteWithChildren = OpportunitiesRoute._addFileChildren(
@@ -286,10 +346,12 @@ const OpportunitiesRouteWithChildren = OpportunitiesRoute._addFileChildren(
 
 interface ProjectsRouteChildren {
   ProjectsSlugRoute: typeof ProjectsSlugRoute
+  ProjectsNewRoute: typeof ProjectsNewRoute
 }
 
 const ProjectsRouteChildren: ProjectsRouteChildren = {
   ProjectsSlugRoute: ProjectsSlugRoute,
+  ProjectsNewRoute: ProjectsNewRoute,
 }
 
 const ProjectsRouteWithChildren = ProjectsRoute._addFileChildren(
@@ -310,6 +372,7 @@ const SpacesRouteWithChildren =
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  DevelopersRoute: DevelopersRoute,
   ForCompaniesRoute: ForCompaniesRoute,
   LoginRoute: LoginRoute,
   OnboardingRoute: OnboardingRoute,
