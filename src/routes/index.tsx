@@ -8,7 +8,7 @@ import { ProjectCard } from "@/components/ProjectCard";
 import { TagPill } from "@/components/TagPill";
 import { Reveal, RevealStagger } from "@/components/motion/Reveal";
 import { CountUp } from "@/components/CountUp";
-import { SAMPLE_DEVELOPERS, SAMPLE_PROJECTS } from "@/data/sample";
+import { fetchAllProfiles, fetchProjectsWithBuilders, profileToDeveloper } from "@/data/queries";
 import heroBaobab from "@/assets/hero-baobab.jpg";
 
 export const Route = createFileRoute("/")({
@@ -20,6 +20,14 @@ export const Route = createFileRoute("/")({
       { property: "og:description", content: "A gathering place for West African developers, starting in The Gambia." },
     ],
   }),
+  loader: async () => {
+    const [profiles, projects] = await Promise.all([fetchAllProfiles(), fetchProjectsWithBuilders()]);
+    return {
+      developers: profiles.slice(0, 12).map(profileToDeveloper),
+      projects: projects.slice(0, 3).map((p) => p.project),
+    };
+  },
+  errorComponent: ({ error }) => <div className="mx-auto max-w-md py-32 text-center text-muted-foreground">{error.message}</div>,
   component: LandingPage,
 });
 
@@ -47,6 +55,7 @@ function ScrollHint() {
 
 function LandingPage() {
   const reduce = useReducedMotion();
+  const { developers, projects } = Route.useLoaderData();
 
   return (
     <>
@@ -190,20 +199,22 @@ function LandingPage() {
           </div>
         </div>
         {/* Mobile: native horizontal scroll. Desktop: auto-marquee, pausable on hover. */}
-        <div className="mt-8 overflow-x-auto pb-4 md:hidden">
-          <div className="flex gap-4 px-4">
-            {SAMPLE_DEVELOPERS.map((d) => (
-              <DeveloperCard key={d.handle} dev={d} />
-            ))}
-          </div>
-        </div>
-        <div className="marquee-pause mt-8 hidden overflow-hidden md:block">
-          <div className="flex w-max animate-marquee gap-4 pl-4 pr-4">
-            {[...SAMPLE_DEVELOPERS, ...SAMPLE_DEVELOPERS].map((d, i) => (
-              <DeveloperCard key={`${d.handle}-${i}`} dev={d} />
-            ))}
-          </div>
-        </div>
+        {developers.length === 0 ? (
+          <div className="mx-auto mt-8 max-w-md px-4 text-center text-sm text-muted-foreground">No developers have joined yet — be the first.</div>
+        ) : (
+          <>
+            <div className="mt-8 overflow-x-auto pb-4 md:hidden">
+              <div className="flex gap-4 px-4">
+                {developers.map((d) => <DeveloperCard key={d.handle} dev={d} />)}
+              </div>
+            </div>
+            <div className="marquee-pause mt-8 hidden overflow-hidden md:block">
+              <div className="flex w-max animate-marquee gap-4 pl-4 pr-4">
+                {[...developers, ...developers].map((d, i) => <DeveloperCard key={`${d.handle}-${i}`} dev={d} />)}
+              </div>
+            </div>
+          </>
+        )}
       </section>
 
       {/* PROJECT SHOWCASE */}
@@ -217,13 +228,15 @@ function LandingPage() {
             Browse all →
           </Link>
         </div>
-        <RevealStagger className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3" stagger={0.1}>
-          {SAMPLE_PROJECTS.slice(0, 3).map((p) => (
-            <Reveal key={p.slug}>
-              <ProjectCard project={p} />
-            </Reveal>
-          ))}
-        </RevealStagger>
+        {projects.length === 0 ? (
+          <div className="mt-8 rounded-3xl border border-dashed border-border bg-card p-12 text-center text-muted-foreground">No projects yet. <Link to="/projects/new" className="text-[var(--kola)] underline">Share the first one →</Link></div>
+        ) : (
+          <RevealStagger className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3" stagger={0.1}>
+            {projects.map((p) => (
+              <Reveal key={p.slug}><ProjectCard project={p} /></Reveal>
+            ))}
+          </RevealStagger>
+        )}
       </section>
 
       {/* FOR COMPANIES */}

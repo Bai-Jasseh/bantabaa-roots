@@ -8,9 +8,10 @@ import { cn } from "@/lib/utils";
 import { useAuth } from "@/hooks/useAuth";
 
 const NAV_LINKS = [
-  { to: "/about", label: "About" },
-  { to: "/spaces", label: "Community" },
+  { to: "/developers", label: "Developers" },
+  { to: "/projects", label: "Projects" },
   { to: "/opportunities", label: "Opportunities" },
+  { to: "/spaces", label: "Community" },
   { to: "/for-companies", label: "For Companies" },
 ] as const;
 
