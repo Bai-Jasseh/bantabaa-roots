@@ -11,13 +11,13 @@ interface LogoProps {
  * Pure inline SVG so it scales crisply at favicon and hero sizes alike.
  */
 export function Logo({ className, showWordmark = true, variant = "color" }: LogoProps) {
-  const trunk = variant === "light" ? "currentColor" : variant === "dark" ? "currentColor" : "var(--baobab)";
-  const nodes = variant === "light" ? "currentColor" : variant === "dark" ? "currentColor" : "var(--kola)";
+  const trunk = variant === "light" ? "currentColor" : variant === "dark" ? "currentColor" : "var(--logo-trunk)";
+  const nodes = variant === "light" ? "currentColor" : variant === "dark" ? "currentColor" : "var(--logo-canopy)";
   const links = variant === "light"
     ? "color-mix(in oklab, currentColor 40%, transparent)"
     : variant === "dark"
       ? "color-mix(in oklab, currentColor 40%, transparent)"
-      : "color-mix(in oklab, var(--kola) 50%, transparent)";
+      : "var(--logo-links)";
 
   return (
     <div className={cn("flex items-center gap-2.5", className)}>
@@ -74,7 +74,7 @@ export function Logo({ className, showWordmark = true, variant = "color" }: Logo
         />
         <path
           d="M20 17c-.18 4.4-.2 9.75-.05 16.15"
-          stroke={variant === "color" ? "color-mix(in oklab, var(--cream) 50%, var(--baobab))" : "currentColor"}
+          stroke={variant === "color" ? "var(--logo-trunk-highlight)" : "currentColor"}
           strokeWidth="0.8"
           strokeLinecap="round"
           opacity="0.45"
