@@ -108,6 +108,10 @@
   --savanna-foreground: oklch(0.98 0.01 145);
   --cream: oklch(0.97 0.018 75);             /* #FAF6F0 warm cream */
   --night: oklch(0.18 0.025 35);             /* #1A1210 deep night */
+  --logo-trunk: var(--baobab);
+  --logo-trunk-highlight: color-mix(in oklab, var(--cream) 50%, var(--baobab));
+  --logo-canopy: var(--kola);
+  --logo-links: color-mix(in oklab, var(--kola) 50%, transparent);
 
   /* Semantic mapped to brand */
   --background: oklch(0.97 0.018 75);
@@ -179,6 +183,10 @@
   --savanna-foreground: oklch(0.16 0.02 148);
   --cream: oklch(0.96 0.018 75);
   --night: oklch(0.13 0.018 35);             /* #0F0A08 base */
+  --logo-trunk: oklch(0.72 0.13 68);
+  --logo-trunk-highlight: oklch(0.92 0.06 78);
+  --logo-canopy: oklch(0.82 0.16 74);
+  --logo-links: color-mix(in oklab, var(--logo-canopy) 72%, transparent);
 
   /* Semantic — surface ladder */
   --background: oklch(0.13 0.018 35);        /* #0F0A08 base */
