@@ -5,10 +5,10 @@ import { cn } from "@/lib/utils";
 type Item = { to: string; label: string; icon: typeof Home; exact?: boolean };
 const ITEMS: Item[] = [
   { to: "/", label: "Home", icon: Home, exact: true },
+  { to: "/developers", label: "Devs", icon: User },
   { to: "/projects", label: "Projects", icon: Layers },
   { to: "/opportunities", label: "Opps", icon: Briefcase },
   { to: "/spaces", label: "Spaces", icon: MessageCircle },
-  { to: "/profile/amina-jallow", label: "Profile", icon: User },
 ];
 
 const tap = (e: React.MouseEvent<HTMLAnchorElement>) => {

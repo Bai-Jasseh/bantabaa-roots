@@ -167,7 +167,7 @@ function SpaceDetailPage() {
                   <span className={`rounded-full px-2 py-0.5 text-[11px] font-medium ${POST_TONE[d.row.type]}`}>{d.row.type}</span>
                   {d.row.pinned && <Pin className="size-3.5 text-[var(--kola)]" />}
                 </div>
-                <h3 className="mt-2 font-display text-lg font-semibold leading-tight text-foreground">{d.row.title}</h3>
+                <Link to="/discussions/$id" params={{ id: d.row.id }} className="mt-2 block font-display text-lg font-semibold leading-tight text-foreground hover:text-[var(--kola)]">{d.row.title}</Link>
                 {d.row.body && <p className="mt-1 line-clamp-2 text-sm text-muted-foreground">{d.row.body}</p>}
                 <div className="mt-2 flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
                   {d.author && (
