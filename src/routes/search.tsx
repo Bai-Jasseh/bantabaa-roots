@@ -16,7 +16,7 @@ export const Route = createFileRoute("/search")({
   validateSearch: searchSchema,
   head: ({ match }: { match: { search: { q?: string } } }) => ({
     meta: [
-      { title: search.q ? `Search: ${search.q} — Bantabaa` : "Search — Bantabaa" },
+      { title: match.search.q ? `Search: ${match.search.q} — Bantabaa` : "Search — Bantabaa" },
       { name: "description", content: "Search developers, projects, and opportunities across Bantabaa." },
     ],
   }),
@@ -127,7 +127,7 @@ function SearchPage() {
             <section className="mt-10">
               <h2 className="font-display text-xl font-semibold">Opportunities</h2>
               <div className="mt-4 grid gap-4">
-                {opps.map((o) => <OpportunityCard key={o.id} opp={opportunityRowToOpportunity(o)} />)}
+                {opps.map((o) => <OpportunityCard key={o.id} op={opportunityRowToOpportunity(o)} />)}
               </div>
             </section>
           )}
