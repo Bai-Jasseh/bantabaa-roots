@@ -174,6 +174,39 @@ export type Database = {
           },
         ]
       }
+      notifications: {
+        Row: {
+          body: string | null
+          created_at: string
+          id: string
+          kind: Database["public"]["Enums"]["notification_kind"]
+          link: string | null
+          read: boolean
+          title: string
+          user_id: string
+        }
+        Insert: {
+          body?: string | null
+          created_at?: string
+          id?: string
+          kind: Database["public"]["Enums"]["notification_kind"]
+          link?: string | null
+          read?: boolean
+          title: string
+          user_id: string
+        }
+        Update: {
+          body?: string | null
+          created_at?: string
+          id?: string
+          kind?: Database["public"]["Enums"]["notification_kind"]
+          link?: string | null
+          read?: boolean
+          title?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       opportunities: {
         Row: {
           apply_url: string | null
@@ -617,6 +650,12 @@ export type Database = {
         | "Debate"
         | "Announcement"
       location_type: "Remote" | "Hybrid" | "On-site"
+      notification_kind:
+        | "reply"
+        | "collab_interest"
+        | "new_opportunity"
+        | "mention"
+        | "system"
       open_to_status:
         | "work"
         | "freelance"
@@ -776,6 +815,13 @@ export const Constants = {
         "Announcement",
       ],
       location_type: ["Remote", "Hybrid", "On-site"],
+      notification_kind: [
+        "reply",
+        "collab_interest",
+        "new_opportunity",
+        "mention",
+        "system",
+      ],
       open_to_status: [
         "work",
         "freelance",
