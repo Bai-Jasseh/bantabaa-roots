@@ -63,7 +63,7 @@ export function ProjectCard({ project, className }: { project: Project; classNam
           <p className="mt-1.5 line-clamp-2 text-sm leading-relaxed text-muted-foreground">{project.description}</p>
         </div>
         <div className="flex items-center gap-2 min-w-0">
-          <div className="scale-75 origin-left"><Avatar name={project.builder.name} hue={project.builder.hue} /></div>
+          <div className="scale-75 origin-left"><Avatar name={project.builder.name} hue={project.builder.hue} url={project.builder.avatarUrl} /></div>
           <span className="truncate text-sm font-medium text-foreground">{project.builder.name}</span>
           {project.builder.location && (
             <span className="truncate text-xs text-muted-foreground">· {project.builder.flag} {project.builder.location.split(",")[0]}</span>
