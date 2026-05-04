@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import type { Tables } from "@/integrations/supabase/types";
+import { ImageUpload } from "@/components/ImageUpload";
 
 type Profile = Tables<"profiles">;
 
@@ -39,6 +40,8 @@ export function EditProfileDialog({
   const [twitter, setTwitter] = useState(profile.twitter_url ?? "");
   const [linkedin, setLinkedin] = useState(profile.linkedin_url ?? "");
   const [website, setWebsite] = useState(profile.website_url ?? "");
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(profile.avatar_url ?? null);
+  const [coverUrl, setCoverUrl] = useState<string | null>(profile.cover_url ?? null);
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
@@ -50,6 +53,7 @@ export function EditProfileDialog({
       setOpenTo((profile.open_to ?? []).filter((x) => x !== "not_available"));
       setGithub(profile.github_url ?? ""); setTwitter(profile.twitter_url ?? "");
       setLinkedin(profile.linkedin_url ?? ""); setWebsite(profile.website_url ?? "");
+      setAvatarUrl(profile.avatar_url ?? null); setCoverUrl(profile.cover_url ?? null);
     }
   }, [open, profile]);
 
@@ -71,6 +75,8 @@ export function EditProfileDialog({
       twitter_url: twitter.trim() || null,
       linkedin_url: linkedin.trim() || null,
       website_url: website.trim() || null,
+      avatar_url: avatarUrl,
+      cover_url: coverUrl,
     }).eq("id", profile.id);
     setSaving(false);
     if (error) { toast.error(error.message); return; }
@@ -89,6 +95,10 @@ export function EditProfileDialog({
           <DialogTitle className="font-display text-2xl">Edit your profile</DialogTitle>
         </DialogHeader>
         <div className="grid gap-4 py-2">
+          <div className="grid gap-4 sm:grid-cols-2">
+            <ImageUpload bucket="avatars" value={avatarUrl} onChange={setAvatarUrl} shape="circle" label="Profile photo" />
+            <ImageUpload bucket="project-covers" value={coverUrl} onChange={setCoverUrl} shape="rect" label="Cover image" />
+          </div>
           <Field label="Full name"><input className={inputCls} value={name} onChange={(e) => setName(e.target.value)} /></Field>
           <Field label="Title"><input className={inputCls} value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Full Stack Developer" /></Field>
           <Field label="Bio"><textarea rows={4} className={inputCls + " resize-none"} value={bio} onChange={(e) => setBio(e.target.value)} /></Field>

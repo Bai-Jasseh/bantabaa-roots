@@ -30,6 +30,7 @@ export function profileToDeveloper(p: ProfileRow): Developer {
     skills: p.skills ?? [],
     openTo: first ? openMap[first] : undefined,
     avatarHue: p.avatar_hue ?? 30,
+    avatarUrl: p.avatar_url,
   };
 }
 
@@ -52,11 +53,13 @@ export function projectRowToProject(
           hue: builder.avatar_hue ?? 30,
           location: [builder.city, builder.country].filter(Boolean).join(", "),
           flag: builder.flag ?? "🌍",
+          avatarUrl: builder.avatar_url,
         }
       : { name: "Unknown", handle: "" },
     stack: p.stack ?? [],
     appreciate,
     discuss,
+    coverUrl: p.cover_url,
     year: new Date(p.created_at).getFullYear(),
     postedDays: days,
     seekingCollab: p.seeking_collab,

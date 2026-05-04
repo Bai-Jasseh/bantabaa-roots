@@ -6,6 +6,8 @@ import { ThemeToggle } from "@/components/ThemeToggle";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/hooks/useAuth";
+import { SearchBar } from "@/components/SearchBar";
+import { NotificationsBell } from "@/components/NotificationsBell";
 
 const NAV_LINKS = [
   { to: "/developers", label: "Developers" },
@@ -55,7 +57,9 @@ export function Navigation() {
         </nav>
 
         <div className="flex items-center gap-2">
+          <div className="hidden lg:block w-64"><SearchBar /></div>
           <ThemeToggle />
+          <NotificationsBell />
           {user ? (
             <>
               {profile?.handle && (
@@ -94,6 +98,7 @@ export function Navigation() {
       {open && (
         <div className="border-t border-border bg-background md:hidden">
           <nav className="flex flex-col gap-1 px-4 py-4">
+            <div className="px-1 pb-2"><SearchBar /></div>
             {NAV_LINKS.map((link) => (
               <Link
                 key={link.to}
