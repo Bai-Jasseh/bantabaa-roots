@@ -6,6 +6,8 @@ import { ThemeToggle } from "@/components/ThemeToggle";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/hooks/useAuth";
+import { SearchBar } from "@/components/SearchBar";
+import { NotificationsBell } from "@/components/NotificationsBell";
 
 const NAV_LINKS = [
   { to: "/developers", label: "Developers" },
@@ -55,7 +57,9 @@ export function Navigation() {
         </nav>
 
         <div className="flex items-center gap-2">
+          <div className="hidden lg:block w-64"><SearchBar /></div>
           <ThemeToggle />
+          <NotificationsBell />
           {user ? (
             <>
               {profile?.handle && (
