@@ -30,6 +30,7 @@ export function profileToDeveloper(p: ProfileRow): Developer {
     skills: p.skills ?? [],
     openTo: first ? openMap[first] : undefined,
     avatarHue: p.avatar_hue ?? 30,
+    avatarUrl: p.avatar_url,
   };
 }
 
