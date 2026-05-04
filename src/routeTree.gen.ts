@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SpacesRouteImport } from './routes/spaces'
+import { Route as SearchRouteImport } from './routes/search'
 import { Route as ProjectsRouteImport } from './routes/projects'
 import { Route as OpportunitiesRouteImport } from './routes/opportunities'
 import { Route as OnboardingRouteImport } from './routes/onboarding'
@@ -29,6 +30,11 @@ import { Route as DiscussionsIdRouteImport } from './routes/discussions.$id'
 const SpacesRoute = SpacesRouteImport.update({
   id: '/spaces',
   path: '/spaces',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SearchRoute = SearchRouteImport.update({
+  id: '/search',
+  path: '/search',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProjectsRoute = ProjectsRouteImport.update({
@@ -116,6 +122,7 @@ export interface FileRoutesByFullPath {
   '/onboarding': typeof OnboardingRoute
   '/opportunities': typeof OpportunitiesRouteWithChildren
   '/projects': typeof ProjectsRouteWithChildren
+  '/search': typeof SearchRoute
   '/spaces': typeof SpacesRouteWithChildren
   '/discussions/$id': typeof DiscussionsIdRoute
   '/opportunities/$id': typeof OpportunitiesIdRoute
@@ -134,6 +141,7 @@ export interface FileRoutesByTo {
   '/onboarding': typeof OnboardingRoute
   '/opportunities': typeof OpportunitiesRouteWithChildren
   '/projects': typeof ProjectsRouteWithChildren
+  '/search': typeof SearchRoute
   '/spaces': typeof SpacesRouteWithChildren
   '/discussions/$id': typeof DiscussionsIdRoute
   '/opportunities/$id': typeof OpportunitiesIdRoute
@@ -153,6 +161,7 @@ export interface FileRoutesById {
   '/onboarding': typeof OnboardingRoute
   '/opportunities': typeof OpportunitiesRouteWithChildren
   '/projects': typeof ProjectsRouteWithChildren
+  '/search': typeof SearchRoute
   '/spaces': typeof SpacesRouteWithChildren
   '/discussions/$id': typeof DiscussionsIdRoute
   '/opportunities/$id': typeof OpportunitiesIdRoute
@@ -173,6 +182,7 @@ export interface FileRouteTypes {
     | '/onboarding'
     | '/opportunities'
     | '/projects'
+    | '/search'
     | '/spaces'
     | '/discussions/$id'
     | '/opportunities/$id'
@@ -191,6 +201,7 @@ export interface FileRouteTypes {
     | '/onboarding'
     | '/opportunities'
     | '/projects'
+    | '/search'
     | '/spaces'
     | '/discussions/$id'
     | '/opportunities/$id'
@@ -209,6 +220,7 @@ export interface FileRouteTypes {
     | '/onboarding'
     | '/opportunities'
     | '/projects'
+    | '/search'
     | '/spaces'
     | '/discussions/$id'
     | '/opportunities/$id'
@@ -228,6 +240,7 @@ export interface RootRouteChildren {
   OnboardingRoute: typeof OnboardingRoute
   OpportunitiesRoute: typeof OpportunitiesRouteWithChildren
   ProjectsRoute: typeof ProjectsRouteWithChildren
+  SearchRoute: typeof SearchRoute
   SpacesRoute: typeof SpacesRouteWithChildren
   DiscussionsIdRoute: typeof DiscussionsIdRoute
   ProfileHandleRoute: typeof ProfileHandleRoute
@@ -240,6 +253,13 @@ declare module '@tanstack/react-router' {
       path: '/spaces'
       fullPath: '/spaces'
       preLoaderRoute: typeof SpacesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/search': {
+      id: '/search'
+      path: '/search'
+      fullPath: '/search'
+      preLoaderRoute: typeof SearchRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/projects': {
@@ -398,6 +418,7 @@ const rootRouteChildren: RootRouteChildren = {
   OnboardingRoute: OnboardingRoute,
   OpportunitiesRoute: OpportunitiesRouteWithChildren,
   ProjectsRoute: ProjectsRouteWithChildren,
+  SearchRoute: SearchRoute,
   SpacesRoute: SpacesRouteWithChildren,
   DiscussionsIdRoute: DiscussionsIdRoute,
   ProfileHandleRoute: ProfileHandleRoute,

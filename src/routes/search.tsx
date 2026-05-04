@@ -14,7 +14,7 @@ const searchSchema = z.object({ q: z.string().optional() });
 
 export const Route = createFileRoute("/search")({
   validateSearch: searchSchema,
-  head: ({ search }) => ({
+  head: ({ match }: { match: { search: { q?: string } } }) => ({
     meta: [
       { title: search.q ? `Search: ${search.q} — Bantabaa` : "Search — Bantabaa" },
       { name: "description", content: "Search developers, projects, and opportunities across Bantabaa." },
