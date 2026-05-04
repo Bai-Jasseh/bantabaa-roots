@@ -74,6 +74,7 @@ function NewProjectPage() {
       <div className="mt-8 space-y-4">
         <Field label="Project name *"><input className={inputCls} value={name} onChange={(e) => setName(e.target.value)} /></Field>
         <Field label="One-line description *"><input className={inputCls} value={description} onChange={(e) => setDescription(e.target.value.slice(0, 160))} /></Field>
+        <ImageUpload bucket="project-covers" value={coverUrl} onChange={setCoverUrl} shape="rect" label="Cover image (optional)" />
         <div className="grid gap-3 sm:grid-cols-2">
           <Field label="Domain">
             <select className={inputCls} value={domain} onChange={(e) => setDomain(e.target.value as typeof domain)}>
