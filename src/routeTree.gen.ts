@@ -9,9 +9,11 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as TermsRouteImport } from './routes/terms'
 import { Route as SpacesRouteImport } from './routes/spaces'
 import { Route as SearchRouteImport } from './routes/search'
 import { Route as ProjectsRouteImport } from './routes/projects'
+import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as OpportunitiesRouteImport } from './routes/opportunities'
 import { Route as OnboardingRouteImport } from './routes/onboarding'
 import { Route as LoginRouteImport } from './routes/login'
@@ -27,6 +29,11 @@ import { Route as OpportunitiesNewRouteImport } from './routes/opportunities.new
 import { Route as OpportunitiesIdRouteImport } from './routes/opportunities.$id'
 import { Route as DiscussionsIdRouteImport } from './routes/discussions.$id'
 
+const TermsRoute = TermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SpacesRoute = SpacesRouteImport.update({
   id: '/spaces',
   path: '/spaces',
@@ -40,6 +47,11 @@ const SearchRoute = SearchRouteImport.update({
 const ProjectsRoute = ProjectsRouteImport.update({
   id: '/projects',
   path: '/projects',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
   getParentRoute: () => rootRouteImport,
 } as any)
 const OpportunitiesRoute = OpportunitiesRouteImport.update({
@@ -121,9 +133,11 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/onboarding': typeof OnboardingRoute
   '/opportunities': typeof OpportunitiesRouteWithChildren
+  '/privacy': typeof PrivacyRoute
   '/projects': typeof ProjectsRouteWithChildren
   '/search': typeof SearchRoute
   '/spaces': typeof SpacesRouteWithChildren
+  '/terms': typeof TermsRoute
   '/discussions/$id': typeof DiscussionsIdRoute
   '/opportunities/$id': typeof OpportunitiesIdRoute
   '/opportunities/new': typeof OpportunitiesNewRoute
@@ -140,9 +154,11 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/onboarding': typeof OnboardingRoute
   '/opportunities': typeof OpportunitiesRouteWithChildren
+  '/privacy': typeof PrivacyRoute
   '/projects': typeof ProjectsRouteWithChildren
   '/search': typeof SearchRoute
   '/spaces': typeof SpacesRouteWithChildren
+  '/terms': typeof TermsRoute
   '/discussions/$id': typeof DiscussionsIdRoute
   '/opportunities/$id': typeof OpportunitiesIdRoute
   '/opportunities/new': typeof OpportunitiesNewRoute
@@ -160,9 +176,11 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/onboarding': typeof OnboardingRoute
   '/opportunities': typeof OpportunitiesRouteWithChildren
+  '/privacy': typeof PrivacyRoute
   '/projects': typeof ProjectsRouteWithChildren
   '/search': typeof SearchRoute
   '/spaces': typeof SpacesRouteWithChildren
+  '/terms': typeof TermsRoute
   '/discussions/$id': typeof DiscussionsIdRoute
   '/opportunities/$id': typeof OpportunitiesIdRoute
   '/opportunities/new': typeof OpportunitiesNewRoute
@@ -181,9 +199,11 @@ export interface FileRouteTypes {
     | '/login'
     | '/onboarding'
     | '/opportunities'
+    | '/privacy'
     | '/projects'
     | '/search'
     | '/spaces'
+    | '/terms'
     | '/discussions/$id'
     | '/opportunities/$id'
     | '/opportunities/new'
@@ -200,9 +220,11 @@ export interface FileRouteTypes {
     | '/login'
     | '/onboarding'
     | '/opportunities'
+    | '/privacy'
     | '/projects'
     | '/search'
     | '/spaces'
+    | '/terms'
     | '/discussions/$id'
     | '/opportunities/$id'
     | '/opportunities/new'
@@ -219,9 +241,11 @@ export interface FileRouteTypes {
     | '/login'
     | '/onboarding'
     | '/opportunities'
+    | '/privacy'
     | '/projects'
     | '/search'
     | '/spaces'
+    | '/terms'
     | '/discussions/$id'
     | '/opportunities/$id'
     | '/opportunities/new'
@@ -239,15 +263,24 @@ export interface RootRouteChildren {
   LoginRoute: typeof LoginRoute
   OnboardingRoute: typeof OnboardingRoute
   OpportunitiesRoute: typeof OpportunitiesRouteWithChildren
+  PrivacyRoute: typeof PrivacyRoute
   ProjectsRoute: typeof ProjectsRouteWithChildren
   SearchRoute: typeof SearchRoute
   SpacesRoute: typeof SpacesRouteWithChildren
+  TermsRoute: typeof TermsRoute
   DiscussionsIdRoute: typeof DiscussionsIdRoute
   ProfileHandleRoute: typeof ProfileHandleRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/spaces': {
       id: '/spaces'
       path: '/spaces'
@@ -267,6 +300,13 @@ declare module '@tanstack/react-router' {
       path: '/projects'
       fullPath: '/projects'
       preLoaderRoute: typeof ProjectsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/opportunities': {
@@ -417,9 +457,11 @@ const rootRouteChildren: RootRouteChildren = {
   LoginRoute: LoginRoute,
   OnboardingRoute: OnboardingRoute,
   OpportunitiesRoute: OpportunitiesRouteWithChildren,
+  PrivacyRoute: PrivacyRoute,
   ProjectsRoute: ProjectsRouteWithChildren,
   SearchRoute: SearchRoute,
   SpacesRoute: SpacesRouteWithChildren,
+  TermsRoute: TermsRoute,
   DiscussionsIdRoute: DiscussionsIdRoute,
   ProfileHandleRoute: ProfileHandleRoute,
 }
