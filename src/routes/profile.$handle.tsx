@@ -52,17 +52,23 @@ export const Route = createFileRoute("/profile/$handle")({
 
 const SECTION_LABEL = "section-label";
 
-function BigAvatar({ name, hue = 30 }: { name: string; hue?: number }) {
+function BigAvatar({ name, hue = 30, url }: { name: string; hue?: number; url?: string | null }) {
   const initials = name.split(" ").map((n) => n[0]).slice(0, 2).join("");
+  const baseStyle: React.CSSProperties = {
+    width: "var(--avatar-size, 6rem)",
+    height: "var(--avatar-size, 6rem)",
+    boxShadow: "0 0 0 3px var(--kola), 0 8px 24px -8px color-mix(in oklab, var(--baobab) 40%, transparent)",
+  };
+  if (url) {
+    return <img src={url} alt="" className="shrink-0 rounded-full object-cover shadow-warm" style={baseStyle} />;
+  }
   return (
     <div
       className="flex shrink-0 items-center justify-center rounded-full font-display font-semibold text-[var(--baobab-foreground)] shadow-warm"
       style={{
+        ...baseStyle,
         backgroundColor: `oklch(0.45 0.08 ${hue})`,
-        width: "var(--avatar-size, 6rem)",
-        height: "var(--avatar-size, 6rem)",
         fontSize: "clamp(1.75rem, 4vw, 2.25rem)",
-        boxShadow: "0 0 0 3px var(--kola), 0 8px 24px -8px color-mix(in oklab, var(--baobab) 40%, transparent)",
       }}
       aria-hidden
     >
@@ -125,12 +131,14 @@ function ProfilePage() {
       <div className="bg-background pb-28 md:pb-12">
         {/* COVER */}
         <Reveal as="section" className="relative">
-          <div className="bg-cover-baobab-kola h-44 w-full md:h-60" aria-hidden />
+          <div className="bg-cover-baobab-kola h-44 w-full md:h-60 overflow-hidden" aria-hidden>
+            {profile.cover_url && <img src={profile.cover_url} alt="" className="h-full w-full object-cover" />}
+          </div>
           <div className="mx-auto max-w-6xl px-4 md:px-6">
             <div className="-mt-14 flex flex-col gap-5 md:-mt-16 md:flex-row md:items-end md:justify-between">
               <div className="flex flex-col items-start gap-4 md:flex-row md:items-end">
                 <div style={{ "--avatar-size": "6rem" } as React.CSSProperties} className="md:[--avatar-size:7.5rem]">
-                  <BigAvatar name={dev.name} hue={dev.avatarHue} />
+                  <BigAvatar name={dev.name} hue={dev.avatarHue} url={profile.avatar_url} />
                 </div>
                 <div className="md:pb-1">
                   <h1 className="font-display font-bold tracking-tight text-foreground" style={{ fontSize: "clamp(28px, 4vw, 36px)", lineHeight: 1.1 }}>
