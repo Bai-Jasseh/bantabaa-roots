@@ -98,6 +98,7 @@ export function Navigation() {
       {open && (
         <div className="border-t border-border bg-background md:hidden">
           <nav className="flex flex-col gap-1 px-4 py-4">
+            <div className="px-1 pb-2"><SearchBar /></div>
             {NAV_LINKS.map((link) => (
               <Link
                 key={link.to}
