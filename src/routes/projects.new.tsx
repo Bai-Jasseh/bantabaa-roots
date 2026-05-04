@@ -4,6 +4,7 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
+import { ImageUpload } from "@/components/ImageUpload";
 
 const DOMAINS = ["Fintech","Agritech","Healthtech","Edtech","Govtech","Open Source","Mobile","AI/ML","Cybersecurity","Blockchain","E-commerce","Other"] as const;
 const STAGES = [{ k: "idea", l: "Idea" }, { k: "in_progress", l: "In Progress" }, { k: "launched", l: "Launched" }] as const;
@@ -36,6 +37,7 @@ function NewProjectPage() {
   const [githubUrl, setGithubUrl] = useState("");
   const [seeking, setSeeking] = useState(false);
   const [collabNote, setCollabNote] = useState("");
+  const [coverUrl, setCoverUrl] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
 
   const inputCls = "w-full rounded-md border border-border bg-background px-3 py-2.5 text-sm focus:border-[var(--kola)] focus:outline-none focus:ring-2 focus:ring-[var(--kola)]/30";
@@ -55,6 +57,7 @@ function NewProjectPage() {
       stack: stack.split(",").map((s) => s.trim()).filter(Boolean).slice(0, 12),
       live_url: liveUrl.trim() || null, github_url: githubUrl.trim() || null,
       seeking_collab: seeking, collab_note: seeking ? collabNote.trim() || null : null,
+      cover_url: coverUrl,
     });
     setSaving(false);
     if (error) { toast.error(error.message); return; }
