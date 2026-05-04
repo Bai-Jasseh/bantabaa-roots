@@ -62,7 +62,9 @@ function ProjectDetailPage() {
     <div className="mx-auto max-w-5xl px-4 py-10 md:px-6 md:py-16">
       <Link to="/projects" className="text-sm text-muted-foreground hover:text-foreground">← Back to projects</Link>
       <div className="mt-6 aspect-[21/9] w-full overflow-hidden rounded-3xl"
-        style={{ background: `linear-gradient(135deg, var(--baobab) 0%, var(--kola) 100%)` }} />
+        style={row.cover_url ? undefined : { background: `linear-gradient(135deg, var(--baobab) 0%, var(--kola) 100%)` }}>
+        {row.cover_url && <img src={row.cover_url} alt="" className="h-full w-full object-cover" />}
+      </div>
 
       <div className="mt-8 flex flex-wrap items-start justify-between gap-4">
         <div>
