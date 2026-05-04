@@ -13,6 +13,7 @@ export interface Developer {
   skills: string[];
   openTo?: "Work" | "Freelance" | "Collaboration" | "Mentoring";
   avatarHue?: number;
+  avatarUrl?: string | null;
 }
 
 interface DeveloperCardProps {
@@ -20,16 +21,22 @@ interface DeveloperCardProps {
   className?: string;
 }
 
-function Avatar({ name, hue = 30 }: { name: string; hue?: number }) {
-  const initials = name
-    .split(" ")
-    .map((n) => n[0])
-    .slice(0, 2)
-    .join("");
+function Avatar({ name, hue = 30, url, size = 48 }: { name: string; hue?: number; url?: string | null; size?: number }) {
+  const initials = name.split(" ").map((n) => n[0]).slice(0, 2).join("");
+  if (url) {
+    return (
+      <img
+        src={url}
+        alt=""
+        className="shrink-0 rounded-full object-cover ring-2 ring-[var(--kola)]/60"
+        style={{ width: size, height: size }}
+      />
+    );
+  }
   return (
     <div
-      className="flex size-12 shrink-0 items-center justify-center rounded-full font-display text-base font-semibold text-[var(--baobab-foreground)] ring-2 ring-[var(--kola)]/60"
-      style={{ backgroundColor: `oklch(0.45 0.08 ${hue})` }}
+      className="flex shrink-0 items-center justify-center rounded-full font-display text-base font-semibold text-[var(--baobab-foreground)] ring-2 ring-[var(--kola)]/60"
+      style={{ backgroundColor: `oklch(0.45 0.08 ${hue})`, width: size, height: size }}
       aria-hidden
     >
       {initials}
@@ -48,7 +55,7 @@ export function DeveloperCard({ dev, className }: DeveloperCardProps) {
       )}
     >
       <div className="flex items-start gap-3">
-        <Avatar name={dev.name} hue={dev.avatarHue} />
+        <Avatar name={dev.name} hue={dev.avatarHue} url={dev.avatarUrl} />
         <div className="min-w-0 flex-1">
           <h3 className="font-display text-base font-semibold leading-tight text-foreground">
             {dev.name}
