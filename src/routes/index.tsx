@@ -205,12 +205,12 @@ function LandingPage() {
           <>
             <div className="mt-8 overflow-x-auto pb-4 md:hidden">
               <div className="flex gap-4 px-4">
-                {developers.map((d) => <DeveloperCard key={d.handle} dev={d} />)}
+                {developers.map((d: any) => <DeveloperCard key={d.handle} dev={d} />)}
               </div>
             </div>
             <div className="marquee-pause mt-8 hidden overflow-hidden md:block">
               <div className="flex w-max animate-marquee gap-4 pl-4 pr-4">
-                {[...developers, ...developers].map((d, i) => <DeveloperCard key={`${d.handle}-${i}`} dev={d} />)}
+                {[...developers, ...developers].map((d: any, i: number) => <DeveloperCard key={`${d.handle}-${i}`} dev={d} />)}
               </div>
             </div>
           </>
@@ -232,7 +232,7 @@ function LandingPage() {
           <div className="mt-8 rounded-3xl border border-dashed border-border bg-card p-12 text-center text-muted-foreground">No projects yet. <Link to="/projects/new" className="text-[var(--kola)] underline">Share the first one →</Link></div>
         ) : (
           <RevealStagger className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3" stagger={0.1}>
-            {projects.map((p) => (
+            {projects.map((p: any) => (
               <Reveal key={p.slug}><ProjectCard project={p} /></Reveal>
             ))}
           </RevealStagger>

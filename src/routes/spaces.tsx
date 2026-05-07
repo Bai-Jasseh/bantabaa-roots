@@ -42,7 +42,7 @@ function SpacesPage() {
   }, [user]);
 
   const groups = ["Domain", "Stage", "Country"] as const;
-  const totalSpaces = spaces.filter((s) => !s.coming_soon).length;
+  const totalSpaces = spaces.filter((s: any) => !s.coming_soon).length;
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-12 md:px-6 md:py-16">
@@ -64,7 +64,7 @@ function SpacesPage() {
         <section key={g} className="mt-14">
           <div className="section-divider"><span className="section-label">By {g}</span></div>
           <div className="mt-5 grid grid-cols-2 gap-4 md:gap-6 lg:grid-cols-3">
-            {spaces.filter((s) => s.category === g).map((s, i) => (
+            {spaces.filter((s: any) => s.category === g).map((s: any, i: number) => (
               <SpaceCard key={s.slug} space={s} delay={i * 0.08} joined={memberships.has(s.id)}
                 onJoinChange={(v) => {
                   setMemberships((prev) => {

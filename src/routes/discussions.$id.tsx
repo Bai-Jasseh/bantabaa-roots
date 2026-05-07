@@ -80,7 +80,7 @@ function DiscussionDetailPage() {
   useEffect(() => {
     if (!user) { setMyVotes({}); return; }
     (async () => {
-      const ids = replies.map((r) => r.id);
+      const ids = replies.map((r: any) => r.id);
       const { data: rVotes } = ids.length
         ? await supabase.from("discussion_votes").select("reply_id, vote").eq("user_id", user.id).in("reply_id", ids)
         : { data: [] as { reply_id: string | null; vote: string }[] };
@@ -175,7 +175,7 @@ function DiscussionDetailPage() {
           <div className="rounded-2xl border border-dashed border-border bg-card p-8 text-center text-muted-foreground">
             No replies yet. Be the first to respond.
           </div>
-        ) : replies.map((r) => (
+        ) : replies.map((r: any) => (
           <article key={r.id} className="flex gap-4 rounded-2xl border border-border bg-card p-5">
             <div className="flex w-10 shrink-0 flex-col items-center gap-1">
               <button onClick={() => voteOn({ replyId: r.id }, "up")}

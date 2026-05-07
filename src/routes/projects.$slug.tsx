@@ -80,7 +80,7 @@ function ProjectDetailPage() {
           {row.problem && <Section title="What problem does this solve?">{row.problem}</Section>}
           {row.solution && <Section title="The solution">{row.solution}</Section>}
           <Section title="Tech stack">
-            <div className="flex flex-wrap gap-2">{project.stack.map((t) => <TagPill key={t}>{t}</TagPill>)}</div>
+            <div className="flex flex-wrap gap-2">{project.stack.map((t: any) => <TagPill key={t}>{t}</TagPill>)}</div>
           </Section>
           {row.lessons && <Section title="Lessons learned">{row.lessons}</Section>}
 

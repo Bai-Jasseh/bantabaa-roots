@@ -36,7 +36,7 @@ function ProjectsPage() {
   }, []);
 
   const projects: (Project & { id: string })[] = useMemo(
-    () => data.map((d) => ({ ...d.project, id: d.row.id })),
+    () => data.map((d: any) => ({ ...d.project, id: d.row.id })),
     [data]
   );
 

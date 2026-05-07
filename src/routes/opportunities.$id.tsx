@@ -70,7 +70,7 @@ function OpportunityDetailPage() {
           </div>
 
           <Section title="What you'll bring">
-            <div className="flex flex-wrap gap-2">{op.tags.map((t) => <TagPill key={t}>{t}</TagPill>)}</div>
+            <div className="flex flex-wrap gap-2">{op.tags.map((t: any) => <TagPill key={t}>{t}</TagPill>)}</div>
           </Section>
 
           {op.compensation && (

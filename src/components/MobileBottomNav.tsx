@@ -1,6 +1,7 @@
 import { Link, useLocation } from "@tanstack/react-router";
-import { Home, Layers, Briefcase, MessageCircle, User } from "lucide-react";
+import { Home, Layers, Briefcase, MessageCircle, User, Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 
 type Item = { to: string; label: string; icon: typeof Home; exact?: boolean };
 const ITEMS: Item[] = [
@@ -80,6 +81,20 @@ export function MobileBottomNav() {
           );
         })}
       </ul>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <button
+            aria-label="Post new"
+            className="absolute -top-6 left-1/2 z-10 flex size-12 -translate-x-1/2 items-center justify-center rounded-full bg-[var(--kola)] text-[var(--kola-foreground)] shadow-lg ring-4 ring-background"
+          >
+            <Plus className="size-6" />
+          </button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="center" side="top">
+          <DropdownMenuItem asChild><Link to="/projects/new">Post a project</Link></DropdownMenuItem>
+          <DropdownMenuItem asChild><Link to="/opportunities/new">Post an opportunity</Link></DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
     </nav>
   );
 }

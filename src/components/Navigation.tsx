@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { Menu, X, LogOut } from "lucide-react";
+import { Menu, X, LogOut, Plus } from "lucide-react";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Logo } from "@/components/Logo";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { Button } from "@/components/ui/button";
@@ -15,6 +16,11 @@ const NAV_LINKS = [
   { to: "/opportunities", label: "Opportunities" },
   { to: "/spaces", label: "Community" },
   { to: "/for-companies", label: "For Companies" },
+] as const;
+
+const POST_LINKS = [
+  { to: "/projects/new", label: "Post a project" },
+  { to: "/opportunities/new", label: "Post an opportunity" },
 ] as const;
 
 export function Navigation() {
@@ -60,6 +66,20 @@ export function Navigation() {
           <div className="hidden lg:block w-64"><SearchBar /></div>
           <ThemeToggle />
           <NotificationsBell />
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button size="sm" className="hidden md:inline-flex h-9 bg-[var(--kola)] text-[var(--kola-foreground)] hover:bg-[var(--kola)]/90">
+                <Plus className="size-4" /> Post
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              {POST_LINKS.map((l) => (
+                <DropdownMenuItem key={l.to} asChild>
+                  <Link to={l.to}>{l.label}</Link>
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
           {user ? (
             <>
               {profile?.handle && (
@@ -107,6 +127,17 @@ export function Navigation() {
                 className="rounded-md px-3 py-3 text-base font-medium text-foreground hover:bg-secondary"
               >
                 {link.label}
+              </Link>
+            ))}
+            <div className="my-2 border-t border-border" />
+            {POST_LINKS.map((link) => (
+              <Link
+                key={link.to}
+                to={link.to}
+                onClick={() => setOpen(false)}
+                className="rounded-md px-3 py-3 text-base font-medium text-[var(--kola)] hover:bg-secondary"
+              >
+                + {link.label}
               </Link>
             ))}
             <Link to="/onboarding" onClick={() => setOpen(false)}>
