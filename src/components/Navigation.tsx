@@ -66,6 +66,20 @@ export function Navigation() {
           <div className="hidden lg:block w-64"><SearchBar /></div>
           <ThemeToggle />
           <NotificationsBell />
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button size="sm" className="hidden md:inline-flex h-9 bg-[var(--kola)] text-[var(--kola-foreground)] hover:bg-[var(--kola)]/90">
+                <Plus className="size-4" /> Post
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              {POST_LINKS.map((l) => (
+                <DropdownMenuItem key={l.to} asChild>
+                  <Link to={l.to}>{l.label}</Link>
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
           {user ? (
             <>
               {profile?.handle && (
