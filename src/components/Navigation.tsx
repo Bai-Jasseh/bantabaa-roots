@@ -17,6 +17,11 @@ const NAV_LINKS = [
   { to: "/for-companies", label: "For Companies" },
 ] as const;
 
+const POST_LINKS = [
+  { to: "/projects/new", label: "Post a project" },
+  { to: "/opportunities/new", label: "Post an opportunity" },
+] as const;
+
 export function Navigation() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
