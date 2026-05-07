@@ -309,7 +309,7 @@ function ProfilePage() {
               <div className="mt-3 flex flex-wrap gap-2">
                 {(profile.open_to ?? []).filter((x: any) => x !== "not_available").length === 0 ? (
                   <p className="text-sm text-muted-foreground">Not currently available</p>
-                ) : (profile.open_to ?? []).filter((x) => x !== "not_available").map((o) => (
+                ) : (profile.open_to ?? []).filter((x: any) => x !== "not_available").map((o: any) => (
                   <span key={o} className="inline-flex items-center rounded-full bg-[var(--savanna)]/15 px-2.5 py-1 text-xs font-medium capitalize text-[var(--savanna)]">{o}</span>
                 ))}
               </div>
