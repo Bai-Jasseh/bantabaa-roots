@@ -1,6 +1,7 @@
 import { Link, useLocation } from "@tanstack/react-router";
-import { Home, Layers, Briefcase, MessageCircle, User } from "lucide-react";
+import { Home, Layers, Briefcase, MessageCircle, User, Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 
 type Item = { to: string; label: string; icon: typeof Home; exact?: boolean };
 const ITEMS: Item[] = [
