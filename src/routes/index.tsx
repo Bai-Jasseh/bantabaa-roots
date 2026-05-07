@@ -205,12 +205,12 @@ function LandingPage() {
           <>
             <div className="mt-8 overflow-x-auto pb-4 md:hidden">
               <div className="flex gap-4 px-4">
-                {developers.map((d) => <DeveloperCard key={d.handle} dev={d} />)}
+                {developers.map((d: Developer) => <DeveloperCard key={d.handle} dev={d} />)}
               </div>
             </div>
             <div className="marquee-pause mt-8 hidden overflow-hidden md:block">
               <div className="flex w-max animate-marquee gap-4 pl-4 pr-4">
-                {[...developers, ...developers].map((d, i) => <DeveloperCard key={`${d.handle}-${i}`} dev={d} />)}
+                {[...developers, ...developers].map((d: Developer, i: number) => <DeveloperCard key={`${d.handle}-${i}`} dev={d} />)}
               </div>
             </div>
           </>
