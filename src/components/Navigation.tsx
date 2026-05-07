@@ -114,6 +114,17 @@ export function Navigation() {
                 {link.label}
               </Link>
             ))}
+            <div className="my-2 border-t border-border" />
+            {POST_LINKS.map((link) => (
+              <Link
+                key={link.to}
+                to={link.to}
+                onClick={() => setOpen(false)}
+                className="rounded-md px-3 py-3 text-base font-medium text-[var(--kola)] hover:bg-secondary"
+              >
+                + {link.label}
+              </Link>
+            ))}
             <Link to="/onboarding" onClick={() => setOpen(false)}>
               <Button className="mt-2 h-11 w-full bg-[var(--kola)] text-[var(--kola-foreground)] hover:bg-[var(--kola)]/90">
                 Join Bantabaa
