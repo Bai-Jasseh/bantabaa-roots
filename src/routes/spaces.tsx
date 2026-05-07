@@ -42,7 +42,7 @@ function SpacesPage() {
   }, [user]);
 
   const groups = ["Domain", "Stage", "Country"] as const;
-  const totalSpaces = spaces.filter((s) => !s.coming_soon).length;
+  const totalSpaces = spaces.filter((s: any) => !s.coming_soon).length;
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-12 md:px-6 md:py-16">

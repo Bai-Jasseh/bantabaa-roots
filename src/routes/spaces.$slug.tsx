@@ -153,7 +153,7 @@ function SpaceDetailPage() {
               <p className="font-display text-xl">No discussions yet.</p>
               <p className="mt-1 text-muted-foreground">Be the first to start one.</p>
             </div>
-          ) : discussions.map((d) => (
+          ) : discussions.map((d: any) => (
             <article key={d.row.id}
               className={`flex gap-4 rounded-2xl border bg-card p-5 shadow-soft transition-all hover:shadow-warm ${d.row.pinned ? "border-[var(--kola)]/40 bg-[color-mix(in_oklab,var(--kola)_4%,var(--card))]" : "border-border"}`}>
               <div className="flex w-10 shrink-0 flex-col items-center gap-1">

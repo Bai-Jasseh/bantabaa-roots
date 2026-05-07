@@ -232,7 +232,7 @@ function LandingPage() {
           <div className="mt-8 rounded-3xl border border-dashed border-border bg-card p-12 text-center text-muted-foreground">No projects yet. <Link to="/projects/new" className="text-[var(--kola)] underline">Share the first one →</Link></div>
         ) : (
           <RevealStagger className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3" stagger={0.1}>
-            {projects.map((p) => (
+            {projects.map((p: any) => (
               <Reveal key={p.slug}><ProjectCard project={p} /></Reveal>
             ))}
           </RevealStagger>

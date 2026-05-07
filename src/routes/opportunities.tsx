@@ -53,15 +53,15 @@ function OpportunitiesPage() {
 
   const counts = useMemo(() => {
     const c: Record<string, number> = { All: opportunities.length };
-    opportunities.forEach((o) => { c[o.type] = (c[o.type] ?? 0) + 1; });
+    opportunities.forEach((o: any) => { c[o.type] = (c[o.type] ?? 0) + 1; });
     return c;
   }, [opportunities]);
 
   const filtered: Opportunity[] = useMemo(() => opportunities
-    .filter((o) => tab === "All" || o.type === tab)
-    .filter((o) => location === "All" || o.location.includes(location) || (location === "Remote" && o.locationType === "Remote"))
-    .filter((o) => experience === "All" || o.experience === experience)
-    .filter((o) => {
+    .filter((o: any) => tab === "All" || o.type === tab)
+    .filter((o: any) => location === "All" || o.location.includes(location) || (location === "Remote" && o.locationType === "Remote"))
+    .filter((o: any) => experience === "All" || o.experience === experience)
+    .filter((o: any) => {
       if (comp === "All") return true;
       const isVolunteer = (o.compensation ?? "").toLowerCase().includes("volunteer");
       return comp === "Volunteer" ? isVolunteer : !isVolunteer;
@@ -95,7 +95,7 @@ function OpportunitiesPage() {
 
         <div className="mt-10 grid grid-cols-3 gap-4 rounded-2xl border border-border bg-[var(--cream)] p-6 dark:bg-card">
           <Stat value={opportunities.length} label="Opportunities Active" />
-          <Stat value={new Set(opportunities.map((o) => o.company)).size} label="Companies Hiring" />
+          <Stat value={new Set(opportunities.map((o: any) => o.company)).size} label="Companies Hiring" />
           <Stat value={savedSet.size} label="You've Saved" />
         </div>
       </div>

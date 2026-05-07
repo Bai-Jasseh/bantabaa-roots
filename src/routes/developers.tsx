@@ -25,8 +25,8 @@ function DevelopersPage() {
 
   const developers = useMemo(() => profiles.map(profileToDeveloper), [profiles]);
   const filtered = useMemo(() => developers
-    .filter((d) => query === "" || (d.name + " " + d.title + " " + d.location + " " + d.skills.join(" ")).toLowerCase().includes(query.toLowerCase()))
-    .filter((d) => openTo === "All" || d.openTo === openTo),
+    .filter((d: any) => query === "" || (d.name + " " + d.title + " " + d.location + " " + d.skills.join(" ")).toLowerCase().includes(query.toLowerCase()))
+    .filter((d: any) => openTo === "All" || d.openTo === openTo),
     [developers, query, openTo]);
 
   return (
@@ -61,7 +61,7 @@ function DevelopersPage() {
           </div>
         ) : (
           <div className="flex flex-wrap gap-4">
-            {filtered.map((d) => <DeveloperCard key={d.handle} dev={d} />)}
+            {filtered.map((d: any) => <DeveloperCard key={d.handle} dev={d} />)}
           </div>
         )}
       </div>

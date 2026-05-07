@@ -152,7 +152,7 @@ function ProfilePage() {
                       <MapPin className="size-4" /> {dev.flag} {dev.location}
                     </span>
                     {(profile.languages ?? []).length > 0 && <span aria-hidden>·</span>}
-                    {(profile.languages ?? []).slice(0, 3).map((lang) => (
+                    {(profile.languages ?? []).slice(0, 3).map((lang: any) => (
                       <span key={lang} className="rounded-full bg-secondary px-2 py-0.5 text-xs">{lang}</span>
                     ))}
                   </div>
@@ -228,7 +228,7 @@ function ProfilePage() {
                     <h3 className="font-display text-2xl font-semibold text-foreground">{featured.name}</h3>
                     <p className="mt-2 text-base text-muted-foreground">{featured.description}</p>
                     <div className="mt-4 flex flex-wrap gap-2">
-                      {featured.stack.map((t) => <TagPill key={t} variant="outlined">{t}</TagPill>)}
+                      {featured.stack.map((t: any) => <TagPill key={t} variant="outlined">{t}</TagPill>)}
                     </div>
                     <div className="mt-6 flex flex-wrap gap-2">
                       <Link to="/projects/$slug" params={{ slug: featured.slug }}>
@@ -251,7 +251,7 @@ function ProfilePage() {
                 </div>
               ) : gridProjects.length === 0 ? null : (
                 <RevealStagger className="mt-4 grid gap-6 sm:grid-cols-2" stagger={0.1}>
-                  {gridProjects.map((p) => (
+                  {gridProjects.map((p: any) => (
                     <Reveal key={p.slug}><ProjectCard project={p} /></Reveal>
                   ))}
                 </RevealStagger>
@@ -307,7 +307,7 @@ function ProfilePage() {
             <div className="rounded-2xl border border-border bg-card p-5 shadow-soft">
               <p className="text-label text-muted-foreground"><Award className="mr-1 inline size-3.5" />Open to</p>
               <div className="mt-3 flex flex-wrap gap-2">
-                {(profile.open_to ?? []).filter((x) => x !== "not_available").length === 0 ? (
+                {(profile.open_to ?? []).filter((x: any) => x !== "not_available").length === 0 ? (
                   <p className="text-sm text-muted-foreground">Not currently available</p>
                 ) : (profile.open_to ?? []).filter((x) => x !== "not_available").map((o) => (
                   <span key={o} className="inline-flex items-center rounded-full bg-[var(--savanna)]/15 px-2.5 py-1 text-xs font-medium capitalize text-[var(--savanna)]">{o}</span>
