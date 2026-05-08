@@ -62,7 +62,7 @@ function EditProjectPage() {
     const { error } = await supabase.from("projects").update({
       name: name.trim(), description: description.trim(), domain, stage,
       problem: problem.trim() || null, solution: solution.trim() || null, lessons: lessons.trim() || null,
-      stack: stack.split(",").map((s) => s.trim()).filter(Boolean).slice(0, 12),
+      stack: stack.split(",").map((s: string) => s.trim()).filter(Boolean).slice(0, 12),
       live_url: liveUrl.trim() || null, github_url: githubUrl.trim() || null,
       seeking_collab: seeking, collab_note: seeking ? collabNote.trim() || null : null,
       cover_url: coverUrl,
