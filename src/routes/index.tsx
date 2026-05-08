@@ -67,7 +67,7 @@ function LandingPage() {
           alt=""
           aria-hidden
           loading="eager"
-          className="pointer-events-none absolute inset-y-0 right-0 h-full w-full select-none object-cover object-right opacity-20 mix-blend-multiply md:w-2/3 md:opacity-30 dark:opacity-35 dark:mix-blend-screen"
+          className="pointer-events-none absolute inset-0 h-full w-full select-none object-cover object-right opacity-25 mix-blend-multiply md:opacity-30 dark:opacity-35 dark:mix-blend-screen"
           animate={reduce ? undefined : { scale: [1, 1.02, 1] }}
           transition={reduce ? undefined : { duration: 4, repeat: Infinity, ease: "easeInOut" }}
         />
