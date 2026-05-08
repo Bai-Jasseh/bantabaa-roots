@@ -1,6 +1,6 @@
 import { createFileRoute, Link, notFound, useRouter, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import { ExternalLink, Github, MessageCircle, Users, Trash2 } from "lucide-react";
+import { ExternalLink, Github, MessageCircle, Users, Trash2, Pencil } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { TagPill } from "@/components/TagPill";
@@ -86,9 +86,14 @@ function ProjectDetailPage() {
         <div className="flex items-center gap-2">
           <ReactionStrip projectId={row.id} appreciate={project.appreciate} discuss={project.discuss} />
           {isOwner && (
-            <Button onClick={remove} variant="outline" size="sm" className="text-[var(--destructive)] hover:bg-[var(--destructive)]/10">
-              <Trash2 className="size-4" /> Delete
-            </Button>
+            <>
+              <Link to="/projects/$slug/edit" params={{ slug: row.slug }}>
+                <Button variant="outline" size="sm"><Pencil className="size-4" /> Edit</Button>
+              </Link>
+              <Button onClick={remove} variant="outline" size="sm" className="text-[var(--destructive)] hover:bg-[var(--destructive)]/10">
+                <Trash2 className="size-4" /> Delete
+              </Button>
+            </>
           )}
         </div>
       </div>
