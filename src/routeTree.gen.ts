@@ -28,6 +28,7 @@ import { Route as ProfileHandleRouteImport } from './routes/profile.$handle'
 import { Route as OpportunitiesNewRouteImport } from './routes/opportunities.new'
 import { Route as OpportunitiesIdRouteImport } from './routes/opportunities.$id'
 import { Route as DiscussionsIdRouteImport } from './routes/discussions.$id'
+import { Route as ProjectsSlugEditRouteImport } from './routes/projects.$slug.edit'
 
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
@@ -124,6 +125,11 @@ const DiscussionsIdRoute = DiscussionsIdRouteImport.update({
   path: '/discussions/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ProjectsSlugEditRoute = ProjectsSlugEditRouteImport.update({
+  id: '/edit',
+  path: '/edit',
+  getParentRoute: () => ProjectsSlugRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -142,9 +148,10 @@ export interface FileRoutesByFullPath {
   '/opportunities/$id': typeof OpportunitiesIdRoute
   '/opportunities/new': typeof OpportunitiesNewRoute
   '/profile/$handle': typeof ProfileHandleRoute
-  '/projects/$slug': typeof ProjectsSlugRoute
+  '/projects/$slug': typeof ProjectsSlugRouteWithChildren
   '/projects/new': typeof ProjectsNewRoute
   '/spaces/$slug': typeof SpacesSlugRoute
+  '/projects/$slug/edit': typeof ProjectsSlugEditRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -163,9 +170,10 @@ export interface FileRoutesByTo {
   '/opportunities/$id': typeof OpportunitiesIdRoute
   '/opportunities/new': typeof OpportunitiesNewRoute
   '/profile/$handle': typeof ProfileHandleRoute
-  '/projects/$slug': typeof ProjectsSlugRoute
+  '/projects/$slug': typeof ProjectsSlugRouteWithChildren
   '/projects/new': typeof ProjectsNewRoute
   '/spaces/$slug': typeof SpacesSlugRoute
+  '/projects/$slug/edit': typeof ProjectsSlugEditRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -185,9 +193,10 @@ export interface FileRoutesById {
   '/opportunities/$id': typeof OpportunitiesIdRoute
   '/opportunities/new': typeof OpportunitiesNewRoute
   '/profile/$handle': typeof ProfileHandleRoute
-  '/projects/$slug': typeof ProjectsSlugRoute
+  '/projects/$slug': typeof ProjectsSlugRouteWithChildren
   '/projects/new': typeof ProjectsNewRoute
   '/spaces/$slug': typeof SpacesSlugRoute
+  '/projects/$slug/edit': typeof ProjectsSlugEditRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -211,6 +220,7 @@ export interface FileRouteTypes {
     | '/projects/$slug'
     | '/projects/new'
     | '/spaces/$slug'
+    | '/projects/$slug/edit'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -232,6 +242,7 @@ export interface FileRouteTypes {
     | '/projects/$slug'
     | '/projects/new'
     | '/spaces/$slug'
+    | '/projects/$slug/edit'
   id:
     | '__root__'
     | '/'
@@ -253,6 +264,7 @@ export interface FileRouteTypes {
     | '/projects/$slug'
     | '/projects/new'
     | '/spaces/$slug'
+    | '/projects/$slug/edit'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -407,6 +419,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DiscussionsIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/projects/$slug/edit': {
+      id: '/projects/$slug/edit'
+      path: '/edit'
+      fullPath: '/projects/$slug/edit'
+      preLoaderRoute: typeof ProjectsSlugEditRouteImport
+      parentRoute: typeof ProjectsSlugRoute
+    }
   }
 }
 
@@ -424,13 +443,25 @@ const OpportunitiesRouteWithChildren = OpportunitiesRoute._addFileChildren(
   OpportunitiesRouteChildren,
 )
 
+interface ProjectsSlugRouteChildren {
+  ProjectsSlugEditRoute: typeof ProjectsSlugEditRoute
+}
+
+const ProjectsSlugRouteChildren: ProjectsSlugRouteChildren = {
+  ProjectsSlugEditRoute: ProjectsSlugEditRoute,
+}
+
+const ProjectsSlugRouteWithChildren = ProjectsSlugRoute._addFileChildren(
+  ProjectsSlugRouteChildren,
+)
+
 interface ProjectsRouteChildren {
-  ProjectsSlugRoute: typeof ProjectsSlugRoute
+  ProjectsSlugRoute: typeof ProjectsSlugRouteWithChildren
   ProjectsNewRoute: typeof ProjectsNewRoute
 }
 
 const ProjectsRouteChildren: ProjectsRouteChildren = {
-  ProjectsSlugRoute: ProjectsSlugRoute,
+  ProjectsSlugRoute: ProjectsSlugRouteWithChildren,
   ProjectsNewRoute: ProjectsNewRoute,
 }
 
@@ -468,3 +499,12 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { createStart } from '@tanstack/react-start'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+  }
+}
