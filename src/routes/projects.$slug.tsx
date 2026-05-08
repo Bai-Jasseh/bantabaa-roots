@@ -1,6 +1,6 @@
-import { createFileRoute, Link, notFound, useRouter } from "@tanstack/react-router";
+import { createFileRoute, Link, notFound, useRouter, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import { ExternalLink, Github, MessageCircle, Users } from "lucide-react";
+import { ExternalLink, Github, MessageCircle, Users, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { TagPill } from "@/components/TagPill";
@@ -38,8 +38,19 @@ function ProjectDetailPage() {
   const { row, project } = Route.useLoaderData();
   const { user } = useAuth();
   const router = useRouter();
+  const navigate = useNavigate();
   const [reply, setReply] = useState("");
   const [posting, setPosting] = useState(false);
+  const isOwner = !!user && user.id === row.builder_id;
+
+  const remove = async () => {
+    if (!isOwner) return;
+    if (!confirm("Delete this project? This cannot be undone.")) return;
+    const { error } = await supabase.from("projects").delete().eq("id", row.id);
+    if (error) { toast.error(error.message); return; }
+    toast.success("Project deleted.");
+    navigate({ to: "/projects" });
+  };
 
   const post = async () => {
     if (!user) { toast.error("Sign in to post."); return; }
@@ -72,7 +83,14 @@ function ProjectDetailPage() {
           <h1 className="mt-3 font-display text-4xl font-bold text-foreground md:text-5xl">{project.name}</h1>
           <p className="mt-2 text-lg text-muted-foreground">{project.description}</p>
         </div>
-        <ReactionStrip projectId={row.id} appreciate={project.appreciate} discuss={project.discuss} />
+        <div className="flex items-center gap-2">
+          <ReactionStrip projectId={row.id} appreciate={project.appreciate} discuss={project.discuss} />
+          {isOwner && (
+            <Button onClick={remove} variant="outline" size="sm" className="text-[var(--destructive)] hover:bg-[var(--destructive)]/10">
+              <Trash2 className="size-4" /> Delete
+            </Button>
+          )}
+        </div>
       </div>
 
       <div className="mt-8 grid gap-8 md:grid-cols-3">
