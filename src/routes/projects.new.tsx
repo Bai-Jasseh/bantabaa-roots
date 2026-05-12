@@ -1,5 +1,5 @@
-import { createFileRoute, Link, useNavigate, redirect } from "@tanstack/react-router";
-import { useState } from "react";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
@@ -11,10 +11,6 @@ const STAGES = [{ k: "idea", l: "Idea" }, { k: "in_progress", l: "In Progress" }
 
 export const Route = createFileRoute("/projects/new")({
   head: () => ({ meta: [{ title: "Share Your Project — Bantabaa" }] }),
-  beforeLoad: async () => {
-    const { data: { session } } = await supabase.auth.getSession();
-    if (!session) throw redirect({ to: "/login" });
-  },
   component: NewProjectPage,
 });
 
