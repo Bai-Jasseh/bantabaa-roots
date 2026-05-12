@@ -1,5 +1,5 @@
-import { createFileRoute, Link, useNavigate, redirect, notFound } from "@tanstack/react-router";
-import { useState } from "react";
+import { createFileRoute, Link, useNavigate, notFound } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
@@ -11,10 +11,6 @@ const STAGES = [{ k: "idea", l: "Idea" }, { k: "in_progress", l: "In Progress" }
 
 export const Route = createFileRoute("/projects/$slug/edit")({
   head: () => ({ meta: [{ title: "Edit Project — Bantabaa" }] }),
-  beforeLoad: async () => {
-    const { data: { session } } = await supabase.auth.getSession();
-    if (!session) throw redirect({ to: "/login" });
-  },
   loader: async ({ params }) => {
     const { data } = await supabase.from("projects").select("*").eq("slug", params.slug).maybeSingle();
     if (!data) throw notFound();
@@ -33,7 +29,15 @@ export const Route = createFileRoute("/projects/$slug/edit")({
 function EditProjectPage() {
   const row = Route.useLoaderData();
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
+
+  useEffect(() => {
+    if (!loading && !user) {
+      toast.error("Please sign in to edit your project.");
+      navigate({ to: "/login" });
+    }
+  }, [user, loading, navigate]);
+
   const [name, setName] = useState(row.name);
   const [description, setDescription] = useState(row.description);
   const [domain, setDomain] = useState<any>(row.domain);
