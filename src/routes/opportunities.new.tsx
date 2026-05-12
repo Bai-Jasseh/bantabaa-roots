@@ -1,5 +1,5 @@
-import { createFileRoute, Link, useNavigate, redirect } from "@tanstack/react-router";
-import { useState } from "react";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
@@ -11,16 +11,20 @@ const EXP = ["Junior", "Mid", "Senior", "Any"] as const;
 
 export const Route = createFileRoute("/opportunities/new")({
   head: () => ({ meta: [{ title: "Post an Opportunity — Bantabaa" }] }),
-  beforeLoad: async () => {
-    const { data: { session } } = await supabase.auth.getSession();
-    if (!session) throw redirect({ to: "/login" });
-  },
   component: NewOpportunityPage,
 });
 
 function NewOpportunityPage() {
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
+
+  useEffect(() => {
+    if (!loading && !user) {
+      toast.error("Please sign in to post an opportunity.");
+      navigate({ to: "/login" });
+    }
+  }, [user, loading, navigate]);
+
   const [title, setTitle] = useState("");
   const [company, setCompany] = useState("");
   const [type, setType] = useState<typeof TYPES[number]>("Job");
