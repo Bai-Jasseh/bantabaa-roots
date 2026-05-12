@@ -134,7 +134,7 @@ function LandingPage() {
         {/* LOCATIONS MARQUEE — pausable */}
         <div className="marquee-pause relative border-y border-[var(--baobab)]/30 bg-[var(--baobab)] py-4 shadow-warm">
           <div className="flex overflow-hidden">
-            <div className="flex shrink-0 animate-marquee gap-10 whitespace-nowrap pr-10 text-base font-medium text-[var(--baobab-foreground)]">
+            <div className="flex shrink-0 animate-marquee gap-10 whitespace-nowrap pr-10 text-base font-semibold text-[var(--cream)]">
               {[...LOCATIONS, ...LOCATIONS].map((c, i) => (
                 <span key={i} className="inline-flex items-center gap-3">
                   <span className="size-1.5 rounded-full bg-[var(--kola)]" />
