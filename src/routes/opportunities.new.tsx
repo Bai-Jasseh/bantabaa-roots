@@ -16,15 +16,16 @@ export const Route = createFileRoute("/opportunities/new")({
 });
 
 function NewOpportunityPage() {
-  const navigate = useNavigate();
-  const { user, loading } = useAuth();
+  return (
+    <AuthGate message="Sign in to post an opportunity.">
+      <NewOpportunityForm />
+    </AuthGate>
+  );
+}
 
-  useEffect(() => {
-    if (!loading && !user) {
-      toast.error("Please sign in to post an opportunity.");
-      navigate({ to: "/login" });
-    }
-  }, [user, loading, navigate]);
+function NewOpportunityForm() {
+  const navigate = useNavigate();
+  const { user } = useAuth();
 
   const [title, setTitle] = useState("");
   const [company, setCompany] = useState("");
