@@ -1,10 +1,11 @@
 import { createFileRoute, Link, useNavigate, notFound } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { ImageUpload } from "@/components/ImageUpload";
+import { AuthGate } from "@/components/AuthGate";
 
 const DOMAINS = ["Fintech","Agritech","Healthtech","Edtech","Govtech","Open Source","Mobile","AI/ML","Cybersecurity","Blockchain","E-commerce","Other"] as const;
 const STAGES = [{ k: "idea", l: "Idea" }, { k: "in_progress", l: "In Progress" }, { k: "launched", l: "Launched" }] as const;
@@ -27,16 +28,17 @@ export const Route = createFileRoute("/projects/$slug/edit")({
 });
 
 function EditProjectPage() {
+  return (
+    <AuthGate message="Sign in to edit your project.">
+      <EditProjectForm />
+    </AuthGate>
+  );
+}
+
+function EditProjectForm() {
   const row = Route.useLoaderData();
   const navigate = useNavigate();
-  const { user, loading } = useAuth();
-
-  useEffect(() => {
-    if (!loading && !user) {
-      toast.error("Please sign in to edit your project.");
-      navigate({ to: "/login" });
-    }
-  }, [user, loading, navigate]);
+  const { user } = useAuth();
 
   const [name, setName] = useState(row.name);
   const [description, setDescription] = useState(row.description);

@@ -1,10 +1,11 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { ImageUpload } from "@/components/ImageUpload";
+import { AuthGate } from "@/components/AuthGate";
 
 const DOMAINS = ["Fintech","Agritech","Healthtech","Edtech","Govtech","Open Source","Mobile","AI/ML","Cybersecurity","Blockchain","E-commerce","Other"] as const;
 const STAGES = [{ k: "idea", l: "Idea" }, { k: "in_progress", l: "In Progress" }, { k: "launched", l: "Launched" }] as const;
@@ -19,15 +20,16 @@ function slugify(s: string) {
 }
 
 function NewProjectPage() {
-  const navigate = useNavigate();
-  const { user, loading } = useAuth();
+  return (
+    <AuthGate message="Sign in to share a project under the tree.">
+      <NewProjectForm />
+    </AuthGate>
+  );
+}
 
-  useEffect(() => {
-    if (!loading && !user) {
-      toast.error("Please sign in to share a project.");
-      navigate({ to: "/login" });
-    }
-  }, [user, loading, navigate]);
+function NewProjectForm() {
+  const navigate = useNavigate();
+  const { user } = useAuth();
 
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");

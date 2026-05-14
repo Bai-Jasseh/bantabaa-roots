@@ -1,9 +1,10 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
+import { AuthGate } from "@/components/AuthGate";
 
 const TYPES = ["Job", "Contract", "Grant", "Mentorship"] as const;
 const LOC_TYPES = ["Remote", "Hybrid", "On-site"] as const;
@@ -15,15 +16,16 @@ export const Route = createFileRoute("/opportunities/new")({
 });
 
 function NewOpportunityPage() {
-  const navigate = useNavigate();
-  const { user, loading } = useAuth();
+  return (
+    <AuthGate message="Sign in to post an opportunity.">
+      <NewOpportunityForm />
+    </AuthGate>
+  );
+}
 
-  useEffect(() => {
-    if (!loading && !user) {
-      toast.error("Please sign in to post an opportunity.");
-      navigate({ to: "/login" });
-    }
-  }, [user, loading, navigate]);
+function NewOpportunityForm() {
+  const navigate = useNavigate();
+  const { user } = useAuth();
 
   const [title, setTitle] = useState("");
   const [company, setCompany] = useState("");
