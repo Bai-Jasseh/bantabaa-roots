@@ -20,15 +20,16 @@ function slugify(s: string) {
 }
 
 function NewProjectPage() {
-  const navigate = useNavigate();
-  const { user, loading } = useAuth();
+  return (
+    <AuthGate message="Sign in to share a project under the tree.">
+      <NewProjectForm />
+    </AuthGate>
+  );
+}
 
-  useEffect(() => {
-    if (!loading && !user) {
-      toast.error("Please sign in to share a project.");
-      navigate({ to: "/login" });
-    }
-  }, [user, loading, navigate]);
+function NewProjectForm() {
+  const navigate = useNavigate();
+  const { user } = useAuth();
 
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
