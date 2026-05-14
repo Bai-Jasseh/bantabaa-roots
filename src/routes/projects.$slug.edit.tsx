@@ -28,16 +28,17 @@ export const Route = createFileRoute("/projects/$slug/edit")({
 });
 
 function EditProjectPage() {
+  return (
+    <AuthGate message="Sign in to edit your project.">
+      <EditProjectForm />
+    </AuthGate>
+  );
+}
+
+function EditProjectForm() {
   const row = Route.useLoaderData();
   const navigate = useNavigate();
-  const { user, loading } = useAuth();
-
-  useEffect(() => {
-    if (!loading && !user) {
-      toast.error("Please sign in to edit your project.");
-      navigate({ to: "/login" });
-    }
-  }, [user, loading, navigate]);
+  const { user } = useAuth();
 
   const [name, setName] = useState(row.name);
   const [description, setDescription] = useState(row.description);
