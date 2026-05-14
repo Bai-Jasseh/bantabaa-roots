@@ -9,7 +9,7 @@ import { fetchProjectsWithBuilders } from "@/data/queries";
 
 const DOMAINS = ["Fintech", "Agritech", "Healthtech", "Edtech", "Govtech", "Open Source", "Other"] as const;
 
-export const Route = createFileRoute("/projects")({
+export const Route = createFileRoute("/projects/")({
   head: () => ({
     meta: [
       { title: "Projects — Bantabaa" },
