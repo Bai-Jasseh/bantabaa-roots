@@ -1,10 +1,11 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { ImageUpload } from "@/components/ImageUpload";
+import { AuthGate } from "@/components/AuthGate";
 
 const DOMAINS = ["Fintech","Agritech","Healthtech","Edtech","Govtech","Open Source","Mobile","AI/ML","Cybersecurity","Blockchain","E-commerce","Other"] as const;
 const STAGES = [{ k: "idea", l: "Idea" }, { k: "in_progress", l: "In Progress" }, { k: "launched", l: "Launched" }] as const;
