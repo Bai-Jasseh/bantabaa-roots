@@ -11,7 +11,7 @@ import { fetchSpaces, fetchMyMemberships, type SpaceRow } from "@/data/queries";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 
-export const Route = createFileRoute("/spaces")({
+export const Route = createFileRoute("/spaces/")({
   head: () => ({
     meta: [
       { title: "Find Your People — Spaces — Bantabaa" },
