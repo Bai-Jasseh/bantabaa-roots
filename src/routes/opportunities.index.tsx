@@ -8,7 +8,7 @@ import { CountUp } from "@/components/CountUp";
 import { fetchOpportunities, fetchMySavedOpps } from "@/data/queries";
 import { useAuth } from "@/hooks/useAuth";
 
-export const Route = createFileRoute("/opportunities")({
+export const Route = createFileRoute("/opportunities/")({
   head: () => ({
     meta: [
       { title: "Opportunities — Bantabaa" },
