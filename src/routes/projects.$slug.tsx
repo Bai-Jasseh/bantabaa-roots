@@ -1,5 +1,5 @@
 import { createFileRoute, Link, notFound, useRouter, useNavigate } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ExternalLink, Github, MessageCircle, Users, Trash2, Pencil } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -41,7 +41,21 @@ function ProjectDetailPage() {
   const navigate = useNavigate();
   const [reply, setReply] = useState("");
   const [posting, setPosting] = useState(false);
+  const [comments, setComments] = useState<any[]>([]);
   const isOwner = !!user && user.id === row.builder_id;
+
+  const loadComments = async () => {
+    const { data } = await supabase.from("project_comments").select("*").eq("project_id", row.id).order("created_at", { ascending: false });
+    const list = data ?? [];
+    const authorIds = Array.from(new Set(list.map((c: any) => c.author_id)));
+    const profiles = authorIds.length
+      ? (await supabase.from("profiles").select("id, full_name, handle, avatar_hue, avatar_url").in("id", authorIds)).data ?? []
+      : [];
+    const pmap = new Map(profiles.map((p: any) => [p.id, p]));
+    setComments(list.map((c: any) => ({ ...c, author: pmap.get(c.author_id) ?? null })));
+  };
+
+  useEffect(() => { loadComments(); /* eslint-disable-next-line */ }, [row.id]);
 
   const remove = async () => {
     if (!isOwner) return;
@@ -52,20 +66,25 @@ function ProjectDetailPage() {
     navigate({ to: "/projects" });
   };
 
+  const removeComment = async (id: string) => {
+    if (!confirm("Delete this comment?")) return;
+    const { error } = await supabase.from("project_comments").delete().eq("id", id);
+    if (error) { toast.error(error.message); return; }
+    setComments((cs) => cs.filter((c) => c.id !== id));
+  };
+
   const post = async () => {
-    if (!user) { toast.error("Sign in to post."); return; }
+    if (!user) { toast.error("Sign in to comment."); return; }
     if (!reply.trim()) return;
     setPosting(true);
-    // Use a discussion linked to first available "Open Source" space as a generic fallback
-    const { data: space } = await supabase.from("spaces").select("id").eq("slug", "web-development").maybeSingle();
-    if (!space) { setPosting(false); toast.error("No space available."); return; }
-    const { error } = await supabase.from("discussions").insert({
-      space_id: space.id, author_id: user.id, title: `Re: ${project.name}`, body: reply.trim(), type: "Question",
+    const { error } = await supabase.from("project_comments").insert({
+      project_id: row.id, author_id: user.id, body: reply.trim(),
     });
     setPosting(false);
     if (error) { toast.error(error.message); return; }
-    toast.success("Posted to community.");
     setReply("");
+    toast.success("Comment posted.");
+    loadComments();
     router.invalidate();
   };
 
@@ -87,9 +106,9 @@ function ProjectDetailPage() {
           <ReactionStrip projectId={row.id} appreciate={project.appreciate} discuss={project.discuss} />
           {isOwner && (
             <>
-              <Link to="/projects/$slug/edit" params={{ slug: row.slug }}>
-                <Button variant="outline" size="sm"><Pencil className="size-4" /> Edit</Button>
-              </Link>
+              <Button asChild variant="outline" size="sm">
+                <Link to="/projects/$slug/edit" params={{ slug: row.slug }}><Pencil className="size-4" /> Edit</Link>
+              </Button>
               <Button onClick={remove} variant="outline" size="sm" className="text-[var(--destructive)] hover:bg-[var(--destructive)]/10">
                 <Trash2 className="size-4" /> Delete
               </Button>
@@ -107,7 +126,7 @@ function ProjectDetailPage() {
           </Section>
           {row.lessons && <Section title="Lessons learned">{row.lessons}</Section>}
 
-          <Section title="Discussion">
+          <Section title={`Discussion${comments.length ? ` (${comments.length})` : ""}`}>
             <div className="rounded-2xl border border-border bg-card p-5">
               <textarea value={reply} onChange={(e) => setReply(e.target.value)}
                 placeholder={user ? "Share your thoughts under the tree…" : "Sign in to share your thoughts."}
@@ -115,11 +134,33 @@ function ProjectDetailPage() {
                 className="w-full resize-none rounded-md border border-border bg-background p-3 text-sm focus:border-[var(--kola)] focus:outline-none focus:ring-2 focus:ring-[var(--kola)]/30" />
               <div className="mt-3 flex justify-end">
                 <Button onClick={post} disabled={!user || posting || !reply.trim()} className="bg-[var(--kola)] text-[var(--kola-foreground)] hover:bg-[var(--kola)]/90">
-                  <MessageCircle className="size-4" /> {posting ? "Posting…" : "Post"}
+                  <MessageCircle className="size-4" /> {posting ? "Posting…" : "Post comment"}
                 </Button>
               </div>
             </div>
-            <p className="mt-6 text-center text-sm text-muted-foreground">Be the first to start the conversation.</p>
+            <div className="mt-4 space-y-3">
+              {comments.length === 0 ? (
+                <p className="py-6 text-center text-sm text-muted-foreground">Be the first to start the conversation.</p>
+              ) : comments.map((c) => (
+                <div key={c.id} className="rounded-2xl border border-border bg-card p-4">
+                  <div className="flex items-center justify-between gap-3">
+                    {c.author ? (
+                      <Link to="/profile/$handle" params={{ handle: c.author.handle }} className="flex items-center gap-2 text-sm font-medium hover:text-[var(--kola)]">
+                        <div className="scale-[0.55] origin-left"><Avatar name={c.author.full_name} hue={c.author.avatar_hue ?? 30} url={c.author.avatar_url} /></div>
+                        <span className="-ml-5">{c.author.full_name}</span>
+                      </Link>
+                    ) : <span className="text-sm text-muted-foreground">Anonymous</span>}
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs text-muted-foreground">{new Date(c.created_at).toLocaleDateString()}</span>
+                      {user?.id === c.author_id && (
+                        <button onClick={() => removeComment(c.id)} className="text-xs text-muted-foreground hover:text-[var(--destructive)]">Delete</button>
+                      )}
+                    </div>
+                  </div>
+                  <p className="mt-2 whitespace-pre-wrap text-sm text-foreground/90">{c.body}</p>
+                </div>
+              ))}
+            </div>
           </Section>
         </div>
 
