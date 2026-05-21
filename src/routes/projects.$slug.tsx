@@ -87,9 +87,9 @@ function ProjectDetailPage() {
           <ReactionStrip projectId={row.id} appreciate={project.appreciate} discuss={project.discuss} />
           {isOwner && (
             <>
-              <Link to="/projects/$slug/edit" params={{ slug: row.slug }}>
-                <Button variant="outline" size="sm"><Pencil className="size-4" /> Edit</Button>
-              </Link>
+              <Button asChild variant="outline" size="sm">
+                <Link to="/projects/$slug/edit" params={{ slug: row.slug }}><Pencil className="size-4" /> Edit</Link>
+              </Button>
               <Button onClick={remove} variant="outline" size="sm" className="text-[var(--destructive)] hover:bg-[var(--destructive)]/10">
                 <Trash2 className="size-4" /> Delete
               </Button>
