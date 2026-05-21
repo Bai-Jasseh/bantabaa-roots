@@ -126,7 +126,7 @@ function ProjectDetailPage() {
           </Section>
           {row.lessons && <Section title="Lessons learned">{row.lessons}</Section>}
 
-          <Section title="Discussion">
+          <Section title={`Discussion${comments.length ? ` (${comments.length})` : ""}`}>
             <div className="rounded-2xl border border-border bg-card p-5">
               <textarea value={reply} onChange={(e) => setReply(e.target.value)}
                 placeholder={user ? "Share your thoughts under the tree…" : "Sign in to share your thoughts."}
@@ -134,11 +134,33 @@ function ProjectDetailPage() {
                 className="w-full resize-none rounded-md border border-border bg-background p-3 text-sm focus:border-[var(--kola)] focus:outline-none focus:ring-2 focus:ring-[var(--kola)]/30" />
               <div className="mt-3 flex justify-end">
                 <Button onClick={post} disabled={!user || posting || !reply.trim()} className="bg-[var(--kola)] text-[var(--kola-foreground)] hover:bg-[var(--kola)]/90">
-                  <MessageCircle className="size-4" /> {posting ? "Posting…" : "Post"}
+                  <MessageCircle className="size-4" /> {posting ? "Posting…" : "Post comment"}
                 </Button>
               </div>
             </div>
-            <p className="mt-6 text-center text-sm text-muted-foreground">Be the first to start the conversation.</p>
+            <div className="mt-4 space-y-3">
+              {comments.length === 0 ? (
+                <p className="py-6 text-center text-sm text-muted-foreground">Be the first to start the conversation.</p>
+              ) : comments.map((c) => (
+                <div key={c.id} className="rounded-2xl border border-border bg-card p-4">
+                  <div className="flex items-center justify-between gap-3">
+                    {c.author ? (
+                      <Link to="/profile/$handle" params={{ handle: c.author.handle }} className="flex items-center gap-2 text-sm font-medium hover:text-[var(--kola)]">
+                        <div className="scale-[0.55] origin-left"><Avatar name={c.author.full_name} hue={c.author.avatar_hue ?? 30} url={c.author.avatar_url} /></div>
+                        <span className="-ml-5">{c.author.full_name}</span>
+                      </Link>
+                    ) : <span className="text-sm text-muted-foreground">Anonymous</span>}
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs text-muted-foreground">{new Date(c.created_at).toLocaleDateString()}</span>
+                      {user?.id === c.author_id && (
+                        <button onClick={() => removeComment(c.id)} className="text-xs text-muted-foreground hover:text-[var(--destructive)]">Delete</button>
+                      )}
+                    </div>
+                  </div>
+                  <p className="mt-2 whitespace-pre-wrap text-sm text-foreground/90">{c.body}</p>
+                </div>
+              ))}
+            </div>
           </Section>
         </div>
 
