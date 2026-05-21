@@ -41,7 +41,21 @@ function ProjectDetailPage() {
   const navigate = useNavigate();
   const [reply, setReply] = useState("");
   const [posting, setPosting] = useState(false);
+  const [comments, setComments] = useState<any[]>([]);
   const isOwner = !!user && user.id === row.builder_id;
+
+  const loadComments = async () => {
+    const { data } = await supabase.from("project_comments").select("*").eq("project_id", row.id).order("created_at", { ascending: false });
+    const list = data ?? [];
+    const authorIds = Array.from(new Set(list.map((c: any) => c.author_id)));
+    const profiles = authorIds.length
+      ? (await supabase.from("profiles").select("id, full_name, handle, avatar_hue, avatar_url").in("id", authorIds)).data ?? []
+      : [];
+    const pmap = new Map(profiles.map((p: any) => [p.id, p]));
+    setComments(list.map((c: any) => ({ ...c, author: pmap.get(c.author_id) ?? null })));
+  };
+
+  useEffect(() => { loadComments(); /* eslint-disable-next-line */ }, [row.id]);
 
   const remove = async () => {
     if (!isOwner) return;
@@ -52,20 +66,25 @@ function ProjectDetailPage() {
     navigate({ to: "/projects" });
   };
 
+  const removeComment = async (id: string) => {
+    if (!confirm("Delete this comment?")) return;
+    const { error } = await supabase.from("project_comments").delete().eq("id", id);
+    if (error) { toast.error(error.message); return; }
+    setComments((cs) => cs.filter((c) => c.id !== id));
+  };
+
   const post = async () => {
-    if (!user) { toast.error("Sign in to post."); return; }
+    if (!user) { toast.error("Sign in to comment."); return; }
     if (!reply.trim()) return;
     setPosting(true);
-    // Use a discussion linked to first available "Open Source" space as a generic fallback
-    const { data: space } = await supabase.from("spaces").select("id").eq("slug", "web-development").maybeSingle();
-    if (!space) { setPosting(false); toast.error("No space available."); return; }
-    const { error } = await supabase.from("discussions").insert({
-      space_id: space.id, author_id: user.id, title: `Re: ${project.name}`, body: reply.trim(), type: "Question",
+    const { error } = await supabase.from("project_comments").insert({
+      project_id: row.id, author_id: user.id, body: reply.trim(),
     });
     setPosting(false);
     if (error) { toast.error(error.message); return; }
-    toast.success("Posted to community.");
     setReply("");
+    toast.success("Comment posted.");
+    loadComments();
     router.invalidate();
   };
 
