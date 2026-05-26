@@ -1,4 +1,4 @@
-# Bantabaa 🌳
+# Bantabaa 
 
 A community platform for West African developers to showcase projects, find opportunities, and connect with each other.
 
@@ -41,13 +41,13 @@ I wanted to solve a real problem I see in my community: talented developers buil
 
 ## Features
 
-- 🔐 **Auth** — Sign up with email/password or Google OAuth. Includes a multi-step onboarding flow for new users.
-- 👤 **Profiles** — Rich developer profiles with avatars, bios, skills, location, and social links.
-- 🚀 **Project Showcase** — Share your projects with images, problem/solution writeups, tech stacks, and tags. Others can appreciate and comment on your work.
-- 💼 **Opportunities Board** — Post and browse jobs, contracts, grants, and mentorship opportunities with filtering.
-- 🏘️ **Community Spaces** — Join discussion forums by topic, career stage, or country.
-- 🌙 **Dark Mode** — Full light/dark theme support.
-- 📱 **Mobile Friendly** — Works great on phones with a bottom nav bar.
+- **Auth** — Sign up with email/password or Google OAuth. Includes a multi-step onboarding flow for new users.
+- **Profiles** — Rich developer profiles with avatars, bios, skills, location, and social links.
+- **Project Showcase** — Share your projects with images, problem/solution writeups, tech stacks, and tags. Others can appreciate and comment on your work.
+- **Opportunities Board** — Post and browse jobs, contracts, grants, and mentorship opportunities with filtering.
+- **Community Spaces** — Join discussion forums by topic, career stage, or country.
+- **Dark Mode** — Full light/dark theme support.
+- **Mobile Friendly** — Works great on phones with a bottom nav bar.
 
 ---
 
