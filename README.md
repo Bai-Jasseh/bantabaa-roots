@@ -8,7 +8,7 @@ A community platform for West African developers to showcase projects, find oppo
 
 ## What is Bantabaa?
 
-*Bantabaa* means "gathering place under the tree" in Mandinka — and that's exactly what this app is. I built it because I noticed that developers in West Africa don't really have a dedicated space to share their work, find jobs, or just connect with other devs in the region.
+*Bantabaa* means "gathering place under the tree"  and that's exactly what this app is. I built it because I noticed that developers in West Africa don't really have a dedicated space to share their work, find jobs, or just connect with other devs in the region.
 
 The app lets you:
 - Create a developer profile and show off your skills
@@ -108,10 +108,4 @@ I'm still actively working on this. Some things on my list:
 
 ---
 
-## License
 
-[MIT](./LICENSE) — feel free to use this as a reference or starting point for your own projects.
-
----
-
-Built with ☀️ in West Africa.
